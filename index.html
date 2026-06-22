@@ -7,34 +7,82 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --verde:       #2a7a2a;
+      --verde-dark:  #1e5c1e;
+      --verde-light: #e8f5e8;
+      --amarillo:    #f5c800;
+      --amarillo-dark: #c9a200;
+      --gris-bg:     #f2f5f2;
+      --gris-borde:  #e2eae2;
+      --texto:       #1a2e1a;
+      --texto-suave: #4a6a4a;
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
-      color: #1a202c;
+      background: var(--gris-bg);
+      color: var(--texto);
     }
 
+    /* ── HEADER ── */
     header {
-      background: #1a56a0;
+      background: var(--verde-dark);
       color: white;
-      padding: 24px 20px 16px;
-      text-align: center;
+      padding: 18px 20px 0;
     }
 
-    header h1 {
-      font-size: 1.6rem;
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding-bottom: 14px;
+    }
+
+    .logo-svg { width: 56px; height: 56px; flex-shrink: 0; }
+
+    .header-text h1 {
+      font-size: 1.35rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
+      line-height: 1.2;
     }
 
-    header p {
+    .header-text p {
+      font-size: 0.82rem;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      padding: 0 20px;
+    }
+
+    .tab-btn {
+      padding: 9px 28px;
+      border: none;
+      border-radius: 8px 8px 0 0;
       font-size: 0.9rem;
-      opacity: 0.85;
-      margin-top: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.75);
+      transition: all 0.2s;
     }
 
+    .tab-btn.active {
+      background: var(--gris-bg);
+      color: var(--verde-dark);
+    }
+
+    /* ── BUSCADOR ── */
     .search-wrap {
-      background: #1a56a0;
-      padding: 0 20px 20px;
+      background: var(--verde);
+      padding: 14px 20px 18px;
       display: flex;
       justify-content: center;
     }
@@ -42,56 +90,69 @@
     .search-wrap input {
       width: 100%;
       max-width: 620px;
-      padding: 12px 18px;
+      padding: 11px 18px;
       border-radius: 8px;
       border: none;
       font-size: 1rem;
       outline: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
     }
+
+    .search-wrap input:focus {
+      box-shadow: 0 0 0 3px var(--amarillo), 0 2px 8px rgba(0,0,0,0.18);
+    }
+
+    /* ── SECCIÓN SERVICIOS ── */
+    #seccion-servicios { display: block; }
+    #seccion-internos  { display: none; }
 
     .container {
-      max-width: 960px;
-      margin: 28px auto;
+      max-width: 980px;
+      margin: 24px auto;
       padding: 0 16px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 18px;
     }
 
+    /* ── CARD ── */
     .card {
       background: white;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
       overflow: hidden;
-      transition: box-shadow 0.2s;
+      border: 1px solid var(--gris-borde);
+      transition: box-shadow 0.2s, transform 0.15s;
     }
 
     .card:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
     }
 
     .card-header {
-      padding: 14px 18px;
+      padding: 13px 16px;
       display: flex;
       align-items: center;
       gap: 10px;
       color: white;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.97rem;
     }
 
-    .card-header .icon { font-size: 1.3rem; }
+    .card-header .icon { font-size: 1.2rem; }
 
-    .card-body { padding: 14px 18px 18px; }
+    .card-body { padding: 14px 16px 16px; }
 
     .section-title {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: #718096;
-      margin: 12px 0 6px;
+      color: var(--verde);
+      margin: 12px 0 5px;
+      border-bottom: 1px solid var(--gris-borde);
+      padding-bottom: 3px;
     }
 
     .section-title:first-child { margin-top: 0; }
@@ -101,31 +162,27 @@
       justify-content: space-between;
       align-items: baseline;
       padding: 4px 0;
-      border-bottom: 1px solid #f0f4f8;
-      font-size: 0.88rem;
+      border-bottom: 1px solid #f4f8f4;
+      font-size: 0.86rem;
       gap: 8px;
     }
 
     .price-row:last-child { border-bottom: none; }
 
-    .price-label { color: #4a5568; flex: 1; }
+    .price-label { color: var(--texto-suave); flex: 1; }
 
     .price-value {
       font-weight: 700;
-      color: #1a56a0;
-      white-space: normal;
+      color: var(--verde-dark);
       text-align: right;
     }
 
-    .req-list {
-      list-style: none;
-      padding: 0;
-    }
+    .req-list { list-style: none; padding: 0; }
 
     .req-list li {
-      font-size: 0.85rem;
-      color: #4a5568;
-      padding: 3px 0 3px 16px;
+      font-size: 0.84rem;
+      color: var(--texto-suave);
+      padding: 3px 0 3px 18px;
       position: relative;
     }
 
@@ -133,335 +190,612 @@
       content: '✓';
       position: absolute;
       left: 0;
-      color: #48bb78;
+      color: var(--verde);
       font-size: 0.75rem;
       top: 4px;
     }
 
     .note {
-      font-size: 0.8rem;
-      color: #718096;
-      background: #f7fafc;
-      border-left: 3px solid #bee3f8;
-      padding: 8px 10px;
+      font-size: 0.79rem;
+      color: #5a7a5a;
+      background: var(--verde-light);
+      border-left: 3px solid var(--amarillo);
+      padding: 7px 10px;
       border-radius: 0 6px 6px 0;
-      margin-top: 10px;
+      margin-top: 9px;
     }
 
     .contact {
-      font-size: 0.8rem;
-      color: #2b6cb0;
+      font-size: 0.79rem;
+      color: var(--verde-dark);
       margin-top: 10px;
+      font-weight: 600;
+    }
+
+    /* colores headers de cards */
+    .color-agua     { background: linear-gradient(135deg, #1a6fa0, #2189c5); }
+    .color-energia  { background: linear-gradient(135deg, #b34700, #d95f00); }
+    .color-internet { background: linear-gradient(135deg, #1e6b40, #27894f); }
+    .color-iptv     { background: linear-gradient(135deg, #5a3a9e, #7050c0); }
+    .color-telefono { background: linear-gradient(135deg, #1e6e70, #258a8c); }
+    .color-sepelio  { background: linear-gradient(135deg, #5a3a10, #7a5020); }
+    .color-verde    { background: linear-gradient(135deg, var(--verde-dark), var(--verde)); }
+
+    /* ── SECCIÓN INTERNOS ── */
+    .internos-wrap {
+      max-width: 820px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    .sector-filtros {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .sector-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 2px solid var(--verde);
+      background: white;
+      color: var(--verde-dark);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .sector-btn:hover, .sector-btn.active {
+      background: var(--verde);
+      color: white;
+    }
+
+    .sector-btn.active {
+      border-color: var(--verde-dark);
+    }
+
+    .internos-tabla {
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border: 1px solid var(--gris-borde);
+      overflow: hidden;
+    }
+
+    .interno-sector-titulo {
+      background: var(--verde-dark);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 8px 16px;
+    }
+
+    .interno-row {
+      display: flex;
+      align-items: center;
+      padding: 9px 16px;
+      border-bottom: 1px solid #f0f5f0;
+      font-size: 0.88rem;
+      gap: 12px;
+      transition: background 0.1s;
+    }
+
+    .interno-row:last-child { border-bottom: none; }
+    .interno-row:hover { background: var(--verde-light); }
+
+    .interno-num {
+      background: var(--amarillo);
+      color: var(--verde-dark);
+      font-weight: 800;
+      font-size: 0.82rem;
+      border-radius: 6px;
+      padding: 2px 8px;
+      min-width: 42px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .interno-nombre { flex: 1; color: var(--texto); }
+
+    .interno-tel {
+      color: var(--verde-dark);
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
     }
 
     .no-results {
       grid-column: 1/-1;
       text-align: center;
-      color: #a0aec0;
-      font-size: 1.1rem;
+      color: #a0b8a0;
+      font-size: 1rem;
       padding: 40px;
     }
 
-    /* colores por servicio */
-    .color-agua    { background: #2b6cb0; }
-    .color-energia { background: #c05621; }
-    .color-internet{ background: #276749; }
-    .color-iptv    { background: #6b46c1; }
-    .color-telefono{ background: #2c7a7b; }
-    .color-sepelio { background: #744210; }
-
-    .tag {
-      display: inline-block;
-      font-size: 0.7rem;
-      background: #ebf8ff;
-      color: #2b6cb0;
-      border-radius: 20px;
-      padding: 2px 8px;
-      margin: 2px 2px 6px 0;
-      font-weight: 600;
-    }
-
     .hidden { display: none !important; }
+
+    @media (max-width: 520px) {
+      .header-text h1 { font-size: 1.1rem; }
+      .tab-btn { padding: 8px 16px; font-size: 0.82rem; }
+      .interno-row { flex-wrap: wrap; }
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Cooperativa de Servicios Públicos</h1>
-  <p>Costos y requisitos de servicios</p>
+  <div class="header-top">
+    <!-- Logo SVG basado en el logo de la cooperativa (triángulo verde con sol amarillo) -->
+    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <!-- Sol amarillo -->
+      <circle cx="28" cy="28" r="14" fill="#f5c800"/>
+      <!-- Triángulo principal -->
+      <polygon points="50,5 95,90 5,90" fill="#2a7a2a"/>
+      <!-- Franja amarilla izquierda -->
+      <polygon points="28,90 38,90 55,55 45,55" fill="#f5c800"/>
+      <!-- Franja amarilla derecha -->
+      <polygon points="52,90 62,90 62,55 52,55" fill="#f5c800"/>
+      <!-- Superposición verde central para dar profundidad -->
+      <polygon points="50,10 90,85 10,85" fill="none" stroke="#1e5c1e" stroke-width="2" opacity="0.4"/>
+    </svg>
+    <div class="header-text">
+      <h1>Cooperativa de Servicios Públicos</h1>
+      <p>Costos, requisitos e internos</p>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="mostrarTab('servicios', this)">📋 Servicios</button>
+    <button class="tab-btn" onclick="mostrarTab('internos', this)">📞 Internos</button>
+  </div>
 </header>
 
-<div class="search-wrap">
-  <input type="text" id="buscar" placeholder="Buscar servicio, requisito o precio..." oninput="filtrar()" />
+<!-- BUSCADOR SERVICIOS -->
+<div class="search-wrap" id="buscador-servicios">
+  <input type="text" id="buscar" placeholder="Buscar servicio, requisito o precio..." oninput="filtrarServicios()" />
 </div>
 
-<div class="container" id="cards">
+<!-- BUSCADOR INTERNOS -->
+<div class="search-wrap" id="buscador-internos" style="display:none">
+  <input type="text" id="buscar-interno" placeholder="Buscar nombre, sector o interno..." oninput="filtrarInternos()" />
+</div>
 
-  <!-- AGUA POTABLE -->
-  <div class="card" data-tags="agua potable urbana rural conexion propietario dni escritura">
-    <div class="card-header color-agua">
-      <span class="icon">💧</span> Agua Potable
+<!-- ══════════════ SECCIÓN SERVICIOS ══════════════ -->
+<div id="seccion-servicios">
+  <div class="container" id="cards">
+
+    <!-- AGUA POTABLE -->
+    <div class="card" data-tags="agua potable urbana rural conexion propietario dni escritura">
+      <div class="card-header color-agua">
+        <span class="icon">💧</span> Agua Potable
+      </div>
+      <div class="card-body">
+        <div class="section-title">Precios de conexión</div>
+        <div class="price-row"><span class="price-label">Conexión Urbana</span><span class="price-value">$80.533,88 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Conexión Rural</span><span class="price-value">$147.336,03 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Materiales</span><span class="price-value">Consultar en el día</span></div>
+        <div class="price-row"><span class="price-label">Derecho uso red (solo rural)</span><span class="price-value">$4.165,09 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Quita de Cepo</span><span class="price-value">$9.743,46 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Suscripción acciones de agua</span><span class="price-value">$20</span></div>
+        <div class="section-title">Requisitos (propietario)</div>
+        <ul class="req-list">
+          <li>Fotocopia del DNI</li>
+          <li>Permiso municipal original</li>
+          <li>Escritura / Boleto compraventa certificado por escribano</li>
+        </ul>
+        <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
+      </div>
     </div>
-    <div class="card-body">
-      <div class="section-title">Precios de conexión</div>
-      <div class="price-row"><span class="price-label">Conexión Urbana</span><span class="price-value">$80.533,88 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Conexión Rural</span><span class="price-value">$147.336,03 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Materiales</span><span class="price-value">Consultar en el día</span></div>
-      <div class="price-row"><span class="price-label">Derecho uso red (solo rural)</span><span class="price-value">$4.165,09 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Quita de Cepo</span><span class="price-value">$9.743,46 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Suscripción acciones de agua</span><span class="price-value">$20</span></div>
 
-      <div class="section-title">Requisitos (propietario)</div>
-      <ul class="req-list">
-        <li>Fotocopia del DNI</li>
-        <li>Permiso municipal original</li>
-        <li>Escritura / Boleto compraventa certificado por escribano</li>
-      </ul>
-
-      <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
+    <!-- ENERGÍA MONOFÁSICA - PROPIETARIO -->
+    <div class="card" data-tags="energia monofasica propietario electricidad luz conexion dni escritura">
+      <div class="card-header color-energia">
+        <span class="icon">⚡</span> Energía Monofásica — Propietario
+      </div>
+      <div class="card-body">
+        <div class="section-title">Precios</div>
+        <div class="price-row"><span class="price-label">Conexión</span><span class="price-value">$61.422,34 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Traslado</span><span class="price-value">$61.422,34 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Transferencia</span><span class="price-value">$61.422,34 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Reconexión Familiar</span><span class="price-value">$9.367,95 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Reconexión Comercial</span><span class="price-value">$9.367,95 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Acciones Familia</span><span class="price-value">$12</span></div>
+        <div class="price-row"><span class="price-label">Acciones Comercio</span><span class="price-value">$16</span></div>
+        <div class="section-title">Depósito en garantía</div>
+        <div class="price-row"><span class="price-label">Familiar</span><span class="price-value">$283.020,68</span></div>
+        <div class="price-row"><span class="price-label">Comercial hasta 10 KW</span><span class="price-value">$424.530,99</span></div>
+        <div class="price-row"><span class="price-label">Comercial más de 10 KW</span><span class="price-value">$560.041,33</span></div>
+        <div class="section-title">Requisitos</div>
+        <ul class="req-list">
+          <li>Fotocopia del DNI</li>
+          <li>Permiso municipal original</li>
+          <li>Escritura / Boleto compraventa certificado por escribano</li>
+          <li>Certificado de instalación eléctrica apta (Ley Prov. N° 10281)</li>
+          <li>Inscripción en ARCA</li>
+          <li>Contrato social</li>
+          <li>Declaración de potencia</li>
+          <li>Autorización con fotocopia del DNI</li>
+          <li>Correo electrónico y celular de contacto</li>
+        </ul>
+        <div class="note">Forma de pago: conexión se abona al momento del trámite. Con depósito: 50% al inicio, el saldo en 2 cuotas en la boleta.</div>
+        <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
+      </div>
     </div>
+
+    <!-- ENERGÍA MONOFÁSICA - INQUILINO -->
+    <div class="card" data-tags="energia monofasica inquilino electricidad luz conexion alquiler garante">
+      <div class="card-header color-energia">
+        <span class="icon">⚡</span> Energía Monofásica — Inquilino
+      </div>
+      <div class="card-body">
+        <div class="section-title">Precios</div>
+        <div class="price-row"><span class="price-label">Conexión</span><span class="price-value">$61.422,34 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Reconexión</span><span class="price-value">$9.367,95 + IVA</span></div>
+        <div class="section-title">Requisitos</div>
+        <ul class="req-list">
+          <li>Fotocopia del DNI</li>
+          <li>Permiso municipal original</li>
+          <li>Contrato de alquiler con firma del propietario (juez de paz o escribano)</li>
+          <li>Certificado de instalación eléctrica apta (Ley Prov. N° 10281)</li>
+          <li>Depósito en garantía o garante (titular de luz y propietario)</li>
+          <li>Inscripción en ARCA</li>
+          <li>Contrato social</li>
+          <li>Declaración de potencia</li>
+          <li>Correo electrónico y celular de contacto</li>
+        </ul>
+        <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
+      </div>
+    </div>
+
+    <!-- ENERGÍA TRIFÁSICA -->
+    <div class="card" data-tags="energia trifasica electricidad luz conexion rural comercio arca potencia">
+      <div class="card-header color-energia">
+        <span class="icon">⚡</span> Energía Trifásica
+      </div>
+      <div class="card-body">
+        <div class="section-title">Precios</div>
+        <div class="price-row"><span class="price-label">Conexión Urbana</span><span class="price-value">$142.429,93 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Conexión Rural</span><span class="price-value">$193.938,79 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Monolito a estrenar / viejo</span><span class="price-value">$142.429,93 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Transferencia</span><span class="price-value">$142.429,93 + IVA</span></div>
+        <div class="price-row"><span class="price-label">Acciones Familia</span><span class="price-value">$12</span></div>
+        <div class="price-row"><span class="price-label">Acciones Comercio</span><span class="price-value">$16</span></div>
+        <div class="price-row"><span class="price-label">Incremento capacidad (C/U 1)</span><span class="price-value">$130 (dólar oficial)</span></div>
+        <div class="section-title">Requisitos</div>
+        <ul class="req-list">
+          <li>Fotocopia del DNI</li>
+          <li>Permiso municipal original</li>
+          <li>Escritura / Boleto compraventa o contrato de alquiler certificado</li>
+          <li>Depósito en garantía o garante</li>
+          <li>Certificado de instalación eléctrica apta (Ley Prov. N° 10281)</li>
+          <li>Inscripción en ARCA</li>
+          <li>Contrato social</li>
+          <li>Declaración de potencia</li>
+          <li>Autorización con fotocopia del DNI</li>
+          <li>Correo electrónico y celular de contacto</li>
+        </ul>
+        <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
+      </div>
+    </div>
+
+    <!-- INTERNET GPON -->
+    <div class="card" data-tags="internet fibra gpon velocidad mb conexion jubilados">
+      <div class="card-header color-internet">
+        <span class="icon">🌐</span> Internet GPON (Fibra)
+      </div>
+      <div class="card-body">
+        <div class="section-title">Conexión</div>
+        <div class="price-row"><span class="price-label">Socio (4 cuotas de $7.411,25)</span><span class="price-value">$29.645</span></div>
+        <div class="price-row"><span class="price-label">No asociado (6 cuotas de $10.083,33)</span><span class="price-value">$60.500</span></div>
+        <div class="section-title">Tarifas mensuales</div>
+        <div class="price-row"><span class="price-label">Hasta 10 Mb (jubilados)</span><span class="price-value">$7.230</span></div>
+        <div class="price-row"><span class="price-label">Hasta 50 Mb</span><span class="price-value">$12.571</span></div>
+        <div class="price-row"><span class="price-label">Hasta 100 Mb</span><span class="price-value">$19.448</span></div>
+        <div class="price-row"><span class="price-label">Hasta 200 Mb</span><span class="price-value">$24.605</span></div>
+        <div class="price-row"><span class="price-label">Hasta 600 Mb</span><span class="price-value">$38.315</span></div>
+        <div class="note">Pack SENSA: con 100 Mb o 50 Mb + TV, sin cargo adicional.</div>
+        <div class="section-title">Requisitos (inquilinos sin energía)</div>
+        <ul class="req-list">
+          <li>DNI</li>
+          <li>Contrato de alquiler con firma del propietario certificada</li>
+          <li>Garante (titular del servicio de energía en la cooperativa)</li>
+        </ul>
+        <div class="note">Router en comodato. En caso de rotura o robo, responde el usuario. Permanencia mínima 1 año.</div>
+        <div class="contact">📧 tramites@coop5.com.ar</div>
+      </div>
+    </div>
+
+    <!-- INTERNET INALÁMBRICO -->
+    <div class="card" data-tags="internet inalambrico wifi antena equipo topografia rural">
+      <div class="card-header color-internet">
+        <span class="icon">📡</span> Internet Inalámbrico
+      </div>
+      <div class="card-body">
+        <div class="section-title">Tarifas mensuales</div>
+        <div class="price-row"><span class="price-label">Hasta 10 Mb</span><span class="price-value">$30.575</span></div>
+        <div class="price-row"><span class="price-label">Hasta 20 Mb</span><span class="price-value">$43.215</span></div>
+        <div class="price-row"><span class="price-label">Hasta 30 Mb</span><span class="price-value">$55.855</span></div>
+        <div class="price-row"><span class="price-label">Hasta 60 Mb</span><span class="price-value">$71.350</span></div>
+        <div class="note">Equipo: ~$310.000 financiado en 6 cuotas con interés. Instalación a cargo del usuario. Sujeto a topografía.</div>
+        <div class="note">Bonificación del 30% en el abono.</div>
+      </div>
+    </div>
+
+    <!-- IPTV -->
+    <div class="card" data-tags="iptv television tv cable decodificador set top box android debito">
+      <div class="card-header color-iptv">
+        <span class="icon">📺</span> Servicio IPTV (Televisión)
+      </div>
+      <div class="card-body">
+        <div class="section-title">Conexión por TV</div>
+        <div class="price-row"><span class="price-label">1 TV</span><span class="price-value">$17.011,93</span></div>
+        <div class="price-row"><span class="price-label">2 TV en adelante</span><span class="price-value">Consultar</span></div>
+        <div class="note">Financiado hasta 6 cuotas con interés o contado.</div>
+        <div class="section-title">Abono mensual</div>
+        <div class="price-row"><span class="price-label">1 TV</span><span class="price-value">$12.159</span></div>
+        <div class="note">Gratis adhiriendo a débito automático.</div>
+        <div class="price-row"><span class="price-label">2 TV</span><span class="price-value">$12.949</span></div>
+        <div class="price-row"><span class="price-label">3 TV</span><span class="price-value">$15.791</span></div>
+        <div class="price-row"><span class="price-label">4 TV</span><span class="price-value">$18.633</span></div>
+        <div class="price-row"><span class="price-label">5 TV</span><span class="price-value">$21.475</span></div>
+        <div class="note">Pack SENSA: 100 Mb o 50 Mb + TV — sin cargo. Router y decodificadores en comodato.</div>
+        <div class="contact">📧 tramites@coop5.com.ar</div>
+      </div>
+    </div>
+
+    <!-- PACKS TV -->
+    <div class="card" data-tags="iptv television tv packs canales fox hbo futbol adultos dvr grabacion sensa">
+      <div class="card-header color-iptv">
+        <span class="icon">📺</span> Packs de TV
+      </div>
+      <div class="card-body">
+        <div class="section-title">Packs adicionales</div>
+        <div class="price-row"><span class="price-label">Grabación DVR</span><span class="price-value">$3.300,96</span></div>
+        <div class="price-row"><span class="price-label">Pack Adultos</span><span class="price-value">$2.746,98</span></div>
+        <div class="price-row"><span class="price-label">Pack Fox</span><span class="price-value">$6.589</span></div>
+        <div class="price-row"><span class="price-label">Pack Fútbol</span><span class="price-value">$14.400</span></div>
+        <div class="price-row"><span class="price-label">Pack HBO</span><span class="price-value">$6.641,80</span></div>
+        <div class="section-title">Packs Sensa</div>
+        <div class="price-row"><span class="price-label">Sensa Básico</span><span class="price-value">$4.531,48</span></div>
+        <div class="price-row"><span class="price-label">Sensa Medio</span><span class="price-value">$6.608,42</span></div>
+        <div class="price-row"><span class="price-label">Sensa Full</span><span class="price-value">$9.440,60</span></div>
+      </div>
+    </div>
+
+    <!-- TELÉFONO -->
+    <div class="card" data-tags="telefono linea fija mantenimiento conexion fibra">
+      <div class="card-header color-telefono">
+        <span class="icon">☎</span> Servicio de Teléfono
+      </div>
+      <div class="card-body">
+        <div class="section-title">Tarifas</div>
+        <div class="price-row"><span class="price-label">Conexión (solo teléfono por fibra)</span><span class="price-value">$17.011,93</span></div>
+        <div class="price-row"><span class="price-label">Mantenimiento Familiar</span><span class="price-value">$3.700</span></div>
+        <div class="price-row"><span class="price-label">Mantenimiento Comercial</span><span class="price-value">$9.290</span></div>
+        <div class="note">Consumo: varía según cada usuario.</div>
+        <div class="contact">📧 tramites@coop5.com.ar</div>
+      </div>
+    </div>
+
+    <!-- SEPELIO Y SUBSIDIO -->
+    <div class="card" data-tags="sepelio subsidio fallecimiento beneficiario grupo familiar carencia">
+      <div class="card-header color-sepelio">
+        <span class="icon">🤝</span> Sepelio y Subsidio por Fallecimiento
+      </div>
+      <div class="card-body">
+        <div class="section-title">Subsidio por Fallecimiento</div>
+        <div class="price-row"><span class="price-label">Costo</span><span class="price-value">Consultar</span></div>
+        <div class="section-title">Requisitos — Subsidio</div>
+        <ul class="req-list">
+          <li>DNI de dos beneficiarios mayores de 18 años</li>
+          <li>Firma del titular de la energía</li>
+        </ul>
+        <div class="section-title">Servicio de Sepelio</div>
+        <div class="price-row"><span class="price-label">Grupo familiar (matrimonio e hijos menores de 18)</span><span class="price-value">Consultar</span></div>
+        <div class="price-row"><span class="price-label">Adicionales</span><span class="price-value">Consultar</span></div>
+        <div class="section-title">Requisitos — Sepelio</div>
+        <ul class="req-list">
+          <li>DNI de todos los integrantes del grupo familiar</li>
+          <li>Libreta de familia / certificado de convivencia</li>
+          <li>Firma del titular de la energía</li>
+        </ul>
+        <div class="note">Período de carencia: 6 meses desde la contratación del servicio.</div>
+      </div>
+    </div>
+
   </div>
+</div>
 
-  <!-- ENERGÍA MONOFÁSICA - PROPIETARIO -->
-  <div class="card" data-tags="energia monofasica propietario electricidad luz conexion dni escritura">
-    <div class="card-header color-energia">
-      <span class="icon">⚡</span> Energía Monofásica — Propietario
+<!-- ══════════════ SECCIÓN INTERNOS ══════════════ -->
+<div id="seccion-internos">
+  <div class="internos-wrap">
+    <div class="sector-filtros" id="sector-filtros">
+      <button class="sector-btn active" onclick="filtrarSector('todos', this)">Todos</button>
     </div>
-    <div class="card-body">
-      <div class="section-title">Precios</div>
-      <div class="price-row"><span class="price-label">Conexión</span><span class="price-value">$61.422,34 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Traslado</span><span class="price-value">$61.422,34 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Transferencia</span><span class="price-value">$61.422,34 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Reconexión Familiar</span><span class="price-value">$9.367,95 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Reconexión Comercial</span><span class="price-value">$9.367,95 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Acciones Familia</span><span class="price-value">$12</span></div>
-      <div class="price-row"><span class="price-label">Acciones Comercio</span><span class="price-value">$16</span></div>
-
-      <div class="section-title">Depósito en garantía</div>
-      <div class="price-row"><span class="price-label">Familiar</span><span class="price-value">$283.020,68</span></div>
-      <div class="price-row"><span class="price-label">Comercial hasta 10 KW</span><span class="price-value">$424.530,99</span></div>
-      <div class="price-row"><span class="price-label">Comercial más de 10 KW</span><span class="price-value">$560.041,33</span></div>
-
-      <div class="section-title">Requisitos</div>
-      <ul class="req-list">
-        <li>Fotocopia del DNI</li>
-        <li>Permiso municipal original</li>
-        <li>Escritura / Boleto compraventa certificado por escribano</li>
-        <li>Certificado de instalación eléctrica apta (Ley Prov. N° 10281)</li>
-        <li>Inscripción en ARCA</li>
-        <li>Contrato social</li>
-        <li>Declaración de potencia</li>
-        <li>Autorización con fotocopia del DNI</li>
-        <li>Dirección de correo electrónico y celular de contacto</li>
-      </ul>
-
-      <div class="note">Forma de pago: conexión se abona al momento del trámite. Con depósito: 50% al inicio, el saldo en 2 cuotas en la boleta.</div>
-      <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
-    </div>
+    <div class="internos-tabla" id="internos-tabla"></div>
   </div>
-
-  <!-- ENERGÍA MONOFÁSICA - INQUILINO -->
-  <div class="card" data-tags="energia monofasica inquilino electricidad luz conexion alquiler garante">
-    <div class="card-header color-energia">
-      <span class="icon">⚡</span> Energía Monofásica — Inquilino
-    </div>
-    <div class="card-body">
-      <div class="section-title">Precios</div>
-      <div class="price-row"><span class="price-label">Conexión</span><span class="price-value">$61.422,34 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Reconexión</span><span class="price-value">$9.367,95 + IVA</span></div>
-
-      <div class="section-title">Requisitos</div>
-      <ul class="req-list">
-        <li>Fotocopia del DNI</li>
-        <li>Permiso municipal original</li>
-        <li>Contrato de alquiler con firma del propietario (juez de paz o escribano)</li>
-        <li>Certificado de instalación eléctrica apta (Ley Prov. N° 10281)</li>
-        <li>Depósito en garantía o garante (titular de luz y propietario)</li>
-        <li>Inscripción en ARCA</li>
-        <li>Contrato social</li>
-        <li>Declaración de potencia</li>
-        <li>Dirección de correo electrónico y celular de contacto</li>
-      </ul>
-
-      <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
-    </div>
-  </div>
-
-  <!-- ENERGÍA TRIFÁSICA -->
-  <div class="card" data-tags="energia trifasica electricidad luz conexion rural comercio arca potencia">
-    <div class="card-header color-energia">
-      <span class="icon">⚡</span> Energía Trifásica
-    </div>
-    <div class="card-body">
-      <div class="section-title">Precios</div>
-      <div class="price-row"><span class="price-label">Conexión Urbana</span><span class="price-value">$142.429,93 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Conexión Rural</span><span class="price-value">$193.938,79 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Monolito a estrenar / viejo</span><span class="price-value">$142.429,93 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Transferencia</span><span class="price-value">$142.429,93 + IVA</span></div>
-      <div class="price-row"><span class="price-label">Acciones Familia</span><span class="price-value">$12</span></div>
-      <div class="price-row"><span class="price-label">Acciones Comercio</span><span class="price-value">$16</span></div>
-      <div class="price-row"><span class="price-label">Incremento capacidad (C/U 1)</span><span class="price-value">$130 (dólar oficial)</span></div>
-
-      <div class="section-title">Requisitos</div>
-      <ul class="req-list">
-        <li>Fotocopia del DNI</li>
-        <li>Permiso municipal original</li>
-        <li>Escritura / Boleto compraventa o contrato de alquiler certificado</li>
-        <li>Depósito en garantía o garante</li>
-        <li>Certificado de instalación eléctrica apta (Ley Prov. N° 10281)</li>
-        <li>Inscripción en ARCA</li>
-        <li>Contrato social</li>
-        <li>Declaración de potencia</li>
-        <li>Autorización con fotocopia del DNI</li>
-        <li>Correo electrónico y celular de contacto</li>
-      </ul>
-
-      <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
-    </div>
-  </div>
-
-  <!-- INTERNET GPON (fibra) -->
-  <div class="card" data-tags="internet fibra gpon velocidad mb conexion jubilados">
-    <div class="card-header color-internet">
-      <span class="icon">🌐</span> Internet GPON (Fibra)
-    </div>
-    <div class="card-body">
-      <div class="section-title">Conexión</div>
-      <div class="price-row"><span class="price-label">Conexión (en 4 cuotas de $7.411,25)</span><span class="price-value">$29.645</span></div>
-      <div class="price-row"><span class="price-label">Conexión no asociado (6 cuotas de $10.083,33)</span><span class="price-value">$60.500</span></div>
-
-      <div class="section-title">Tarifas mensuales</div>
-      <div class="price-row"><span class="price-label">Hasta 10 Mb (jubilados)</span><span class="price-value">$7.230</span></div>
-      <div class="price-row"><span class="price-label">Hasta 50 Mb</span><span class="price-value">$12.571</span></div>
-      <div class="price-row"><span class="price-label">Hasta 100 Mb</span><span class="price-value">$19.448</span></div>
-      <div class="price-row"><span class="price-label">Hasta 200 Mb</span><span class="price-value">$24.605</span></div>
-      <div class="price-row"><span class="price-label">Hasta 600 Mb</span><span class="price-value">$38.315</span></div>
-
-      <div class="note">Pack SENSA: con 100 Mb o 50 Mb + TV, sin cargo adicional.</div>
-
-      <div class="section-title">Requisitos (inquilinos sin energía)</div>
-      <ul class="req-list">
-        <li>DNI</li>
-        <li>Contrato de alquiler con firma del propietario certificada</li>
-        <li>Garante (titular del servicio de energía en la cooperativa)</li>
-      </ul>
-
-      <div class="note">Router entregado en comodato. En caso de rotura, robo o hurto, el usuario responde. Permanencia mínima 1 año.</div>
-      <div class="contact">📧 tramites@coop5.com.ar</div>
-    </div>
-  </div>
-
-  <!-- INTERNET INALÁMBRICO -->
-  <div class="card" data-tags="internet inalambrico wifi antena equipo topografia rural">
-    <div class="card-header color-internet">
-      <span class="icon">📡</span> Internet Inalámbrico
-    </div>
-    <div class="card-body">
-      <div class="section-title">Tarifas mensuales</div>
-      <div class="price-row"><span class="price-label">Hasta 10 Mb</span><span class="price-value">$30.575</span></div>
-      <div class="price-row"><span class="price-label">Hasta 20 Mb</span><span class="price-value">$43.215</span></div>
-      <div class="price-row"><span class="price-label">Hasta 30 Mb</span><span class="price-value">$55.855</span></div>
-      <div class="price-row"><span class="price-label">Hasta 60 Mb</span><span class="price-value">$71.350</span></div>
-
-      <div class="note">Equipo: ~$310.000 financiado en 6 cuotas con interés. La instalación es a cargo del usuario. Sujeto a topografía del lugar.</div>
-      <div class="note">Bonificación del 30% en el abono.</div>
-    </div>
-  </div>
-
-  <!-- IPTV -->
-  <div class="card" data-tags="iptv television tv cable decodificador set top box android">
-    <div class="card-header color-iptv">
-      <span class="icon">📺</span> Servicio IPTV (Televisión)
-    </div>
-    <div class="card-body">
-      <div class="section-title">Conexión por TV</div>
-      <div class="price-row"><span class="price-label">1 TV</span><span class="price-value">$17.011,93</span></div>
-      <div class="price-row"><span class="price-label">2 TV en adelante</span><span class="price-value">Consultar</span></div>
-      <div class="note">Financiado hasta 6 cuotas con interés o contado.</div>
-
-      <div class="section-title">Abono mensual</div>
-      <div class="price-row"><span class="price-label">1 TV</span><span class="price-value">$12.159</span></div>
-      <div class="note">Gratis adhiriendo a débito automático.</div>
-      <div class="price-row"><span class="price-label">2 TV</span><span class="price-value">$12.949</span></div>
-      <div class="price-row"><span class="price-label">3 TV</span><span class="price-value">$15.791</span></div>
-      <div class="price-row"><span class="price-label">4 TV</span><span class="price-value">$18.633</span></div>
-      <div class="price-row"><span class="price-label">5 TV</span><span class="price-value">$21.475</span></div>
-
-      <div class="note">Pack SENSA: 100 Mb o 50 Mb + TV — sin cargo. Router y decodificadores en comodato.</div>
-      <div class="contact">📧 tramites@coop5.com.ar</div>
-    </div>
-  </div>
-
-  <!-- TELÉFONO -->
-  <div class="card" data-tags="telefono linea fija mantenimiento conexion fibra">
-    <div class="card-header color-telefono">
-      <span class="icon">☎</span> Servicio de Teléfono
-    </div>
-    <div class="card-body">
-      <div class="section-title">Tarifas</div>
-      <div class="price-row"><span class="price-label">Conexión (solo teléfono por fibra)</span><span class="price-value">$17.011,93</span></div>
-      <div class="price-row"><span class="price-label">Mantenimiento Familiar</span><span class="price-value">$3.700</span></div>
-      <div class="price-row"><span class="price-label">Mantenimiento Comercial</span><span class="price-value">$9.290</span></div>
-
-      <div class="note">Consumo: varía según cada usuario.</div>
-      <div class="contact">📧 tramites@coop5.com.ar</div>
-    </div>
-  </div>
-
-  <!-- PACKS TV -->
-  <div class="card" data-tags="iptv television tv packs canales fox hbo futbol adultos dvr grabacion sensa">
-    <div class="card-header color-iptv">
-      <span class="icon">📺</span> Packs de TV
-    </div>
-    <div class="card-body">
-      <div class="section-title">Packs adicionales</div>
-      <div class="price-row"><span class="price-label">Grabación DVR</span><span class="price-value">$3.300,96</span></div>
-      <div class="price-row"><span class="price-label">Pack Adultos</span><span class="price-value">$2.746,98</span></div>
-      <div class="price-row"><span class="price-label">Pack Fox</span><span class="price-value">$6.589</span></div>
-      <div class="price-row"><span class="price-label">Pack Fútbol</span><span class="price-value">$14.400</span></div>
-      <div class="price-row"><span class="price-label">Pack HBO</span><span class="price-value">$6.641,80</span></div>
-
-      <div class="section-title">Packs Sensa</div>
-      <div class="price-row"><span class="price-label">Sensa Básico</span><span class="price-value">$4.531,48</span></div>
-      <div class="price-row"><span class="price-label">Sensa Medio</span><span class="price-value">$6.608,42</span></div>
-      <div class="price-row"><span class="price-label">Sensa Full</span><span class="price-value">$9.440,60</span></div>
-    </div>
-  </div>
-
-  <!-- SEPELIO Y SUBSIDIO -->
-  <div class="card" data-tags="sepelio subsidio fallecimiento beneficiario grupo familiar carencia">
-    <div class="card-header color-sepelio">
-      <span class="icon">🤝</span> Sepelio y Subsidio por Fallecimiento
-    </div>
-    <div class="card-body">
-      <div class="section-title">Subsidio por Fallecimiento</div>
-      <div class="price-row"><span class="price-label">Costo</span><span class="price-value">Consultar</span></div>
-
-      <div class="section-title">Requisitos — Subsidio</div>
-      <ul class="req-list">
-        <li>DNI de dos beneficiarios mayores de 18 años</li>
-        <li>Firma del titular de la energía</li>
-      </ul>
-
-      <div class="section-title">Servicio de Sepelio</div>
-      <div class="price-row"><span class="price-label">Grupo familiar (matrimonio e hijos menores de 18)</span><span class="price-value">Consultar</span></div>
-      <div class="price-row"><span class="price-label">Adicionales</span><span class="price-value">Consultar</span></div>
-
-      <div class="section-title">Requisitos — Sepelio</div>
-      <ul class="req-list">
-        <li>DNI de todos los integrantes del grupo familiar</li>
-        <li>Libreta de familia / certificado de convivencia</li>
-        <li>Firma del titular de la energía</li>
-      </ul>
-
-      <div class="note">Período de carencia: 6 meses desde la contratación del servicio.</div>
-    </div>
-  </div>
-
 </div>
 
 <script>
-  function filtrar() {
+  // ── DATOS INTERNOS ──
+  const internos = [
+    { sector: "Agua Potable",           num: "144", nombre: "Agua Potable",                                      tel: "469144" },
+    { sector: "Agua Potable",           num: "146", nombre: "Agua Potable",                                      tel: "469146" },
+    { sector: "Automotor",              num: "143", nombre: "Automotor (Nicolás Poggio)",                         tel: "469143" },
+    { sector: "Automotor",              num: "350", nombre: "Automotor - Taller Mecánico (Jorge Cabrera)",        tel: "445350" },
+    { sector: "Banco de Sangre",        num: "145", nombre: "Banco de Sangre (Gabriela Fanin - Karina Cabuchi)", tel: "469145" },
+    { sector: "Banco de Sangre",        num: "174", nombre: "Banco de Sangre (Karina Cabuchi - Roxana Lecler)",  tel: "469174" },
+    { sector: "Cajas",                  num: "127", nombre: "Caja - Administración Central",                     tel: "469127" },
+    { sector: "Cajas",                  num: "164", nombre: "Caja - Lote XV",                                    tel: "469164" },
+    { sector: "Cajas",                  num: "179", nombre: "Caja - Edificio La Caroyense",                      tel: "469179" },
+    { sector: "Cajas",                  num: "202", nombre: "Caja - Edificio Sinsacate",                         tel: "446202" },
+    { sector: "Cajas",                  num: "341", nombre: "Caja - Edificio Ruta 9",                            tel: "445341" },
+    { sector: "Canal",                  num: "301", nombre: "Canal Coop",                                        tel: "445301" },
+    { sector: "Central Telefónica",     num: "165", nombre: "Central Telefónica (Claudio Peschiutta)",           tel: "469165" },
+    { sector: "Central Telefónica",     num: "166", nombre: "Central Telefónica (Gabriel Nieva)",                tel: "469166" },
+    { sector: "Central Telefónica",     num: "169", nombre: "Central Telefónica (Germán Perlo)",                 tel: "469169" },
+    { sector: "Central Telefónica",     num: "201", nombre: "Central Telefónica - Edificio Sinsacate",           tel: "446201" },
+    { sector: "Cocinas",                num: "136", nombre: "Cocina - Edificio Administrativo",                  tel: "469136" },
+    { sector: "Cocinas",                num: "203", nombre: "Cocina - Edificio Sinsacate",                       tel: "446203" },
+    { sector: "Comercial",              num: "111", nombre: "Comercial (Juan Peralta Ochos)",                    tel: "469111" },
+    { sector: "Comercial",              num: "118", nombre: "Comercial (Mónica Anzolini)",                       tel: "469118" },
+    { sector: "Comercial",              num: "120", nombre: "Comercial",                                         tel: "469120" },
+    { sector: "Comercial",              num: "123", nombre: "Comercial (Ricardo Aris)",                          tel: "469123" },
+    { sector: "Comercial",              num: "189", nombre: "Comercial (Valeria Caverzacio)",                    tel: "469189" },
+    { sector: "Comercial",              num: "190", nombre: "Comercial",                                         tel: "469190" },
+    { sector: "Compras",                num: "106", nombre: "Compras (Luis Monges)",                             tel: "469106" },
+    { sector: "Compras",                num: "134", nombre: "Compras (Eugenia Luna)",                            tel: "469134" },
+    { sector: "Compras",                num: "135", nombre: "Compras (Mariano Braida)",                          tel: "469135" },
+    { sector: "Compras",                num: "137", nombre: "Compras (Matías Strasorier)",                       tel: "469137" },
+    { sector: "Consejo",                num: "104", nombre: "Consejo - Vicepresidencia",                         tel: "469104" },
+    { sector: "Consejo",                num: "107", nombre: "Consejo - Presidencia",                             tel: "469107" },
+    { sector: "Consejo",                num: "124", nombre: "Consejo - Sala de Consejo",                         tel: "469124" },
+    { sector: "Contaduría",             num: "115", nombre: "Contaduría (Franco González - Ariel Stolzing)",     tel: "469115" },
+    { sector: "Contaduría",             num: "116", nombre: "Contaduría (Maximiliano Agüero - Gastón Ponce)",    tel: "469116" },
+    { sector: "Depósito",               num: "178", nombre: "Depósito Cocheras (Archivo General)",               tel: "469178" },
+    { sector: "Depósito",               num: "351", nombre: "Fábrica de Postes",                                 tel: "445351" },
+    { sector: "Depósito",               num: "352", nombre: "Depósito (Javier Bongiovanni)",                     tel: "445352" },
+    { sector: "Depósito",               num: "370", nombre: "Depósito (Martín Canalda - Héctor Basualdo)",       tel: "445370" },
+    { sector: "Gerencia",               num: "110", nombre: "Gerencia",                                          tel: "469110" },
+    { sector: "Gerencia",               num: "188", nombre: "Subgerencia (Cra. Laura Oliver)",                   tel: "469188" },
+    { sector: "Guardia",                num: "149", nombre: "Sala de Monitoreo La Caroyense",                    tel: "469149" },
+    { sector: "Guardia",                num: "176", nombre: "Guardia Edificio Administrativo (SEGUCOR)",          tel: "469176" },
+    { sector: "Guardia",                num: "349", nombre: "Guardia - Edificio Ruta 9 (SEGUCOR)",               tel: "445349" },
+    { sector: "Herrería",               num: "348", nombre: "Herrería",                                          tel: "445348" },
+    { sector: "Internet",               num: "154", nombre: "Internet Mostrador",                                 tel: "469154" },
+    { sector: "Internet",               num: "168", nombre: "Internet (Daniel Palacio)",                          tel: "469168" },
+    { sector: "IPTV",                   num: "181", nombre: "Central Telefónica / GIS (César Sandoval)",         tel: "469181" },
+    { sector: "IPTV",                   num: "182", nombre: "IPTV / GIS (Sebastián Zaya)",                       tel: "469182" },
+    { sector: "Mantenimiento Lab.",     num: "142", nombre: "Mantenimiento Lab. - Inspector (Rodrigo Pettina)",  tel: "469142" },
+    { sector: "Mantenimiento Lab.",     num: "153", nombre: "Mantenimiento Lab. (Martín Mena)",                  tel: "469153" },
+    { sector: "Mantenimiento Lab.",     num: "197", nombre: "Mantenimiento Lab. (Jorge Griguol)",                 tel: "469197" },
+    { sector: "Oficina Técnica",        num: "183", nombre: "Oficina Técnica (Mariano Grande)",                  tel: "469183" },
+    { sector: "Oficina Técnica",        num: "184", nombre: "Oficina Técnica (Fernando Peschiutta)",              tel: "469184" },
+    { sector: "Oficina Técnica",        num: "185", nombre: "Oficina Técnica (Emiliano Cragnolini)",              tel: "469185" },
+    { sector: "Oficina Técnica",        num: "186", nombre: "Oficina Técnica (Gino Chiarandini)",                tel: "469186" },
+    { sector: "Oficina Técnica",        num: "187", nombre: "Oficina Técnica (Juan Hidaigo)",                    tel: "469187" },
+    { sector: "Reclamos",               num: "119", nombre: "Reclamos (Fernando Tipisky)",                       tel: "469119" },
+    { sector: "Reclamos",               num: "126", nombre: "Reclamos",                                          tel: "469126" },
+    { sector: "Redes",                  num: "131", nombre: "Redes (Mario Arlia)",                               tel: "469131" },
+    { sector: "Redes",                  num: "155", nombre: "Redes - Guardia de Reclamos",                       tel: "469155" },
+    { sector: "RRHH",                   num: "108", nombre: "RRHH (Exequiel Isasmendi)",                         tel: "469108" },
+    { sector: "RRHH",                   num: "140", nombre: "RRHH (Claudio Roya)",                               tel: "469140" },
+    { sector: "RRHH",                   num: "141", nombre: "RRHH (Mercedes Seculini - Gonzalo Nicolodi)",       tel: "469141" },
+    { sector: "Secretaría",             num: "102", nombre: "Secretaría (Eduardo Cerutti)",                      tel: "469102" },
+    { sector: "Secretaría",             num: "122", nombre: "Secretaría (Pablo Antonietti - Aldo Gomez)",        tel: "469122" },
+    { sector: "Secretaría",             num: "125", nombre: "Secretaría (Pablo Antonietti - Aldo Gomez)",        tel: "469125" },
+    { sector: "Secretaría",             num: "170", nombre: "Secretaría (Pablo Antonietti - Aldo Gomez)",        tel: "469170" },
+    { sector: "Seguridad e Higiene",    num: "175", nombre: "Seguridad e Higiene (Daniel Marini)",               tel: "469175" },
+    { sector: "Sistemas",               num: "157", nombre: "Sistemas (Exequiel Torres - Franco Benítez)",       tel: "469157" },
+    { sector: "Sistemas",               num: "158", nombre: "Sistemas (Pablo González)",                         tel: "469158" },
+    { sector: "Sistemas",               num: "159", nombre: "Sistemas (Gerardo Rui - Carlos Montes)",            tel: "469159" },
+    { sector: "Tablero",                num: "103", nombre: "Tablero",                                           tel: "469103" },
+    { sector: "Tablero",                num: "150", nombre: "Tablero",                                           tel: "469150" },
+    { sector: "Tesorería",              num: "109", nombre: "Tesorería (Marcelo Rizzi)",                         tel: "469109" },
+    { sector: "Tesorería",              num: "172", nombre: "Tesorería (Sergio Peresotti - Sergio Sánchez)",     tel: "469172" },
+    { sector: "Ventas",                 num: "113", nombre: "Ventas",                                            tel: "469113" },
+    { sector: "Ventas",                 num: "117", nombre: "Ventas (Martín Ferreira)",                          tel: "469117" },
+    { sector: "Ventas",                 num: "161", nombre: "Ventas",                                            tel: "469161" },
+    { sector: "Ventas",                 num: "162", nombre: "Ventas (Juan Peralta - Agustina Gutiérrez)",        tel: "469162" },
+    { sector: "Ventas",                 num: "163", nombre: "Ventas (Patricia Rizzi)",                           tel: "469163" },
+  ];
+
+  // ── ESTADO ──
+  let sectorActivo = 'todos';
+  let busquedaInterna = '';
+
+  // ── INICIALIZAR FILTROS DE SECTOR ──
+  function initSectores() {
+    const sectores = [...new Set(internos.map(i => i.sector))].sort();
+    const wrap = document.getElementById('sector-filtros');
+    sectores.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'sector-btn';
+      btn.textContent = s;
+      btn.onclick = () => filtrarSector(s, btn);
+      wrap.appendChild(btn);
+    });
+    renderInternos();
+  }
+
+  function filtrarSector(sector, btn) {
+    sectorActivo = sector;
+    document.querySelectorAll('.sector-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderInternos();
+  }
+
+  function filtrarInternos() {
+    busquedaInterna = document.getElementById('buscar-interno').value.toLowerCase().trim();
+    renderInternos();
+  }
+
+  function renderInternos() {
+    const tabla = document.getElementById('internos-tabla');
+    tabla.innerHTML = '';
+
+    const filtrados = internos.filter(i => {
+      const matchSector = sectorActivo === 'todos' || i.sector === sectorActivo;
+      const texto = `${i.num} ${i.nombre} ${i.sector} ${i.tel}`.toLowerCase();
+      const matchBusqueda = busquedaInterna === '' || texto.includes(busquedaInterna);
+      return matchSector && matchBusqueda;
+    });
+
+    if (filtrados.length === 0) {
+      tabla.innerHTML = '<div class="no-results">No se encontraron resultados.</div>';
+      return;
+    }
+
+    // Agrupar por sector
+    const grupos = {};
+    filtrados.forEach(i => {
+      if (!grupos[i.sector]) grupos[i.sector] = [];
+      grupos[i.sector].push(i);
+    });
+
+    Object.entries(grupos).forEach(([sector, items]) => {
+      const titulo = document.createElement('div');
+      titulo.className = 'interno-sector-titulo';
+      titulo.textContent = sector;
+      tabla.appendChild(titulo);
+
+      items.forEach(i => {
+        const row = document.createElement('div');
+        row.className = 'interno-row';
+        row.innerHTML = `
+          <span class="interno-num">${i.num}</span>
+          <span class="interno-nombre">${i.nombre}</span>
+          <span class="interno-tel">☎ ${i.tel}</span>
+        `;
+        tabla.appendChild(row);
+      });
+    });
+  }
+
+  // ── TABS ──
+  function mostrarTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    if (tab === 'servicios') {
+      document.getElementById('seccion-servicios').style.display = 'block';
+      document.getElementById('seccion-internos').style.display = 'none';
+      document.getElementById('buscador-servicios').style.display = 'flex';
+      document.getElementById('buscador-internos').style.display = 'none';
+    } else {
+      document.getElementById('seccion-servicios').style.display = 'none';
+      document.getElementById('seccion-internos').style.display = 'block';
+      document.getElementById('buscador-servicios').style.display = 'none';
+      document.getElementById('buscador-internos').style.display = 'flex';
+    }
+  }
+
+  // ── FILTRAR SERVICIOS ──
+  function filtrarServicios() {
     const q = document.getElementById('buscar').value.toLowerCase().trim();
     const cards = document.querySelectorAll('.card');
     let visibles = 0;
@@ -486,6 +820,9 @@
       noRes.remove();
     }
   }
+
+  // ── INIT ──
+  initSectores();
 </script>
 
 </body>
