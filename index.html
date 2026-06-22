@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cooperativa de Servicios Públicos</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+    }
+
+    header {
+      background: #1a56a0;
+      color: white;
+      padding: 24px 20px 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    .search-wrap {
+      background: #1a56a0;
+      padding: 0 20px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      max-width: 620px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 28px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+    }
+
+    .card-header {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .card-header .icon { font-size: 1.3rem; }
+
+    .card-body { padding: 14px 18px 18px; }
+
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #718096;
+      margin: 12px 0 6px;
+    }
+
+    .section-title:first-child { margin-top: 0; }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 4px 0;
+      border-bottom: 1px solid #f0f4f8;
+      font-size: 0.88rem;
+      gap: 8px;
+    }
+
+    .price-row:last-child { border-bottom: none; }
+
+    .price-label { color: #4a5568; flex: 1; }
+
+    .price-value {
+      font-weight: 700;
+      color: #1a56a0;
+      white-space: nowrap;
+    }
+
+    .req-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .req-list li {
+      font-size: 0.85rem;
+      color: #4a5568;
+      padding: 3px 0 3px 16px;
+      position: relative;
+    }
+
+    .req-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: #48bb78;
+      font-size: 0.75rem;
+      top: 4px;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: #718096;
+      background: #f7fafc;
+      border-left: 3px solid #bee3f8;
+      padding: 8px 10px;
+      border-radius: 0 6px 6px 0;
+      margin-top: 10px;
+    }
+
+    .contact {
+      font-size: 0.8rem;
+      color: #2b6cb0;
+      margin-top: 10px;
+    }
+
+    .no-results {
+      grid-column: 1/-1;
+      text-align: center;
+      color: #a0aec0;
+      font-size: 1.1rem;
+      padding: 40px;
+    }
+
+    /* colores por servicio */
+    .color-agua    { background: #2b6cb0; }
+    .color-energia { background: #c05621; }
+    .color-internet{ background: #276749; }
+    .color-iptv    { background: #6b46c1; }
+    .color-telefono{ background: #2c7a7b; }
+    .color-sepelio { background: #744210; }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      background: #ebf8ff;
+      color: #2b6cb0;
+      border-radius: 20px;
+      padding: 2px 8px;
+      margin: 2px 2px 6px 0;
+      font-weight: 600;
+    }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Cooperativa de Servicios Públicos</h1>
+  <p>Costos y requisitos de servicios</p>
+</header>
+
+<div class="search-wrap">
+  <input type="text" id="buscar" placeholder="Buscar servicio, requisito o precio..." oninput="filtrar()" />
+</div>
+
+<div class="container" id="cards">
+
+  <!-- AGUA POTABLE -->
+  <div class="card" data-tags="agua potable urbana rural conexion propietario dni escritura">
+    <div class="card-header color-agua">
+      <span class="icon">💧</span> Agua Potable
+    </div>
+    <div class="card-body">
+      <div class="section-title">Precios de conexión</div>
+      <div class="price-row"><span class="price-label">Conexión Urbana</span><span class="price-value">$80.533,88 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Conexión Rural</span><span class="price-value">$147.336,03 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Materiales</span><span class="price-value">Consultar en el día</span></div>
+      <div class="price-row"><span class="price-label">Derecho uso red (solo rural)</span><span class="price-value">$4.165,09 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Quita de Cepo</span><span class="price-value">$9.743,46 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Suscripción acciones de agua</span><span class="price-value">$20</span></div>
+
+      <div class="section-title">Requisitos (propietario)</div>
+      <ul class="req-list">
+        <li>Fotocopia del DNI</li>
+        <li>Permiso municipal original</li>
+        <li>Escritura / Boleto compraventa certificado por escribano</li>
+      </ul>
+
+      <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
+    </div>
+  </div>
+
+  <!-- ENERGÍA MONOFÁSICA - PROPIETARIO -->
+  <div class="card" data-tags="energia monofasica propietario electricidad luz conexion dni escritura">
+    <div class="card-header color-energia">
+      <span class="icon">⚡</span> Energía Monofásica — Propietario
+    </div>
+    <div class="card-body">
+      <div class="section-title">Precios</div>
+      <div class="price-row"><span class="price-label">Conexión</span><span class="price-value">$61.422,34 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Traslado</span><span class="price-value">$61.422,34 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Transferencia</span><span class="price-value">$61.422,34 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Reconexión Familiar</span><span class="price-value">$9.367,95 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Reconexión Comercial</span><span class="price-value">$9.367,95 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Acciones Familia</span><span class="price-value">$12</span></div>
+      <div class="price-row"><span class="price-label">Acciones Comercio</span><span class="price-value">$16</span></div>
+
+      <div class="section-title">Depósito en garantía</div>
+      <div class="price-row"><span class="price-label">Familiar</span><span class="price-value">$283.020,68</span></div>
+      <div class="price-row"><span class="price-label">Comercial hasta 10 KW</span><span class="price-value">$424.530,99</span></div>
+      <div class="price-row"><span class="price-label">Comercial más de 10 KW</span><span class="price-value">$560.041,33</span></div>
+
+      <div class="section-title">Requisitos</div>
+      <ul class="req-list">
+        <li>Fotocopia del DNI</li>
+        <li>Permiso municipal original</li>
+        <li>Escritura / Boleto compraventa certificado por escribano</li>
+        <li>Certificado de instalación eléctrica apta (Ley Prov. N° 10281)</li>
+        <li>Inscripción en ARCA</li>
+        <li>Contrato social</li>
+        <li>Declaración de potencia</li>
+        <li>Autorización con fotocopia del DNI</li>
+        <li>Dirección de correo electrónico y celular de contacto</li>
+      </ul>
+
+      <div class="note">Forma de pago: conexión se abona al momento del trámite. Con depósito: 50% al inicio, el saldo en 2 cuotas en la boleta.</div>
+      <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
+    </div>
+  </div>
+
+  <!-- ENERGÍA MONOFÁSICA - INQUILINO -->
+  <div class="card" data-tags="energia monofasica inquilino electricidad luz conexion alquiler garante">
+    <div class="card-header color-energia">
+      <span class="icon">⚡</span> Energía Monofásica — Inquilino
+    </div>
+    <div class="card-body">
+      <div class="section-title">Precios</div>
+      <div class="price-row"><span class="price-label">Conexión</span><span class="price-value">$61.422,34 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Reconexión</span><span class="price-value">$9.367,95 + IVA</span></div>
+
+      <div class="section-title">Requisitos</div>
+      <ul class="req-list">
+        <li>Fotocopia del DNI</li>
+        <li>Permiso municipal original</li>
+        <li>Contrato de alquiler con firma del propietario (juez de paz o escribano)</li>
+        <li>Certificado de instalación eléctrica apta (Ley Prov. N° 10281)</li>
+        <li>Depósito en garantía o garante (titular de luz y propietario)</li>
+        <li>Inscripción en ARCA</li>
+        <li>Contrato social</li>
+        <li>Declaración de potencia</li>
+        <li>Dirección de correo electrónico y celular de contacto</li>
+      </ul>
+
+      <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
+    </div>
+  </div>
+
+  <!-- ENERGÍA TRIFÁSICA -->
+  <div class="card" data-tags="energia trifasica electricidad luz conexion rural comercio arca potencia">
+    <div class="card-header color-energia">
+      <span class="icon">⚡</span> Energía Trifásica
+    </div>
+    <div class="card-body">
+      <div class="section-title">Precios</div>
+      <div class="price-row"><span class="price-label">Conexión Urbana</span><span class="price-value">$142.429,93 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Conexión Rural</span><span class="price-value">$193.938,79 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Monolito a estrenar / viejo</span><span class="price-value">$142.429,93 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Transferencia</span><span class="price-value">$142.429,93 + IVA</span></div>
+      <div class="price-row"><span class="price-label">Acciones Familia</span><span class="price-value">$12</span></div>
+      <div class="price-row"><span class="price-label">Acciones Comercio</span><span class="price-value">$16</span></div>
+      <div class="price-row"><span class="price-label">Incremento capacidad (C/U 1)</span><span class="price-value">$130 (dólar oficial)</span></div>
+
+      <div class="section-title">Requisitos</div>
+      <ul class="req-list">
+        <li>Fotocopia del DNI</li>
+        <li>Permiso municipal original</li>
+        <li>Escritura / Boleto compraventa o contrato de alquiler certificado</li>
+        <li>Depósito en garantía o garante</li>
+        <li>Certificado de instalación eléctrica apta (Ley Prov. N° 10281)</li>
+        <li>Inscripción en ARCA</li>
+        <li>Contrato social</li>
+        <li>Declaración de potencia</li>
+        <li>Autorización con fotocopia del DNI</li>
+        <li>Correo electrónico y celular de contacto</li>
+      </ul>
+
+      <div class="contact">📧 tramites@coop5.com.ar &nbsp;|&nbsp; ☎ 469163 / 469117</div>
+    </div>
+  </div>
+
+  <!-- INTERNET GPON (fibra) -->
+  <div class="card" data-tags="internet fibra gpon velocidad mb conexion jubilados">
+    <div class="card-header color-internet">
+      <span class="icon">🌐</span> Internet GPON (Fibra)
+    </div>
+    <div class="card-body">
+      <div class="section-title">Conexión</div>
+      <div class="price-row"><span class="price-label">Conexión (en 4 cuotas de $7.411,25)</span><span class="price-value">$29.645</span></div>
+      <div class="price-row"><span class="price-label">Conexión no asociado (6 cuotas de $10.083,33)</span><span class="price-value">$60.500</span></div>
+
+      <div class="section-title">Tarifas mensuales</div>
+      <div class="price-row"><span class="price-label">Hasta 10 Mb (jubilados)</span><span class="price-value">$7.230</span></div>
+      <div class="price-row"><span class="price-label">Hasta 50 Mb</span><span class="price-value">$12.571</span></div>
+      <div class="price-row"><span class="price-label">Hasta 100 Mb</span><span class="price-value">$19.448</span></div>
+      <div class="price-row"><span class="price-label">Hasta 200 Mb</span><span class="price-value">$24.605</span></div>
+      <div class="price-row"><span class="price-label">Hasta 600 Mb</span><span class="price-value">$38.315</span></div>
+
+      <div class="note">Pack SENSA: con 100 Mb o 50 Mb + TV, sin cargo adicional.</div>
+
+      <div class="section-title">Requisitos (inquilinos sin energía)</div>
+      <ul class="req-list">
+        <li>DNI</li>
+        <li>Contrato de alquiler con firma del propietario certificada</li>
+        <li>Garante (titular del servicio de energía en la cooperativa)</li>
+      </ul>
+
+      <div class="note">Router entregado en comodato. En caso de rotura, robo o hurto, el usuario responde. Permanencia mínima 1 año.</div>
+      <div class="contact">📧 tramites@coop5.com.ar</div>
+    </div>
+  </div>
+
+  <!-- INTERNET INALÁMBRICO -->
+  <div class="card" data-tags="internet inalambrico wifi antena equipo topografia rural">
+    <div class="card-header color-internet">
+      <span class="icon">📡</span> Internet Inalámbrico
+    </div>
+    <div class="card-body">
+      <div class="section-title">Tarifas mensuales</div>
+      <div class="price-row"><span class="price-label">Hasta 10 Mb</span><span class="price-value">$30.575</span></div>
+      <div class="price-row"><span class="price-label">Hasta 20 Mb</span><span class="price-value">$43.215</span></div>
+      <div class="price-row"><span class="price-label">Hasta 30 Mb</span><span class="price-value">$55.855</span></div>
+      <div class="price-row"><span class="price-label">Hasta 60 Mb</span><span class="price-value">$71.350</span></div>
+
+      <div class="note">Equipo: ~$310.000 financiado en 6 cuotas con interés. La instalación es a cargo del usuario. Sujeto a topografía del lugar.</div>
+      <div class="note">Bonificación del 30% en el abono.</div>
+    </div>
+  </div>
+
+  <!-- IPTV -->
+  <div class="card" data-tags="iptv television tv cable decodificador set top box android">
+    <div class="card-header color-iptv">
+      <span class="icon">📺</span> Servicio IPTV (Televisión)
+    </div>
+    <div class="card-body">
+      <div class="section-title">Conexión por TV</div>
+      <div class="price-row"><span class="price-label">1 TV</span><span class="price-value">$17.011,93</span></div>
+      <div class="price-row"><span class="price-label">2 TV en adelante</span><span class="price-value">Consultar (hasta 6 cuotas c/interés o contado)</span></div>
+
+      <div class="section-title">Abono mensual</div>
+      <div class="price-row"><span class="price-label">1 TV</span><span class="price-value">$12.159 (gratis adhiriendo a débito automático)</span></div>
+      <div class="price-row"><span class="price-label">2 TV</span><span class="price-value">$12.949</span></div>
+      <div class="price-row"><span class="price-label">3 TV</span><span class="price-value">$15.791</span></div>
+      <div class="price-row"><span class="price-label">4 TV</span><span class="price-value">$18.633</span></div>
+      <div class="price-row"><span class="price-label">5 TV</span><span class="price-value">$21.475</span></div>
+
+      <div class="note">Pack SENSA: 100 Mb o 50 Mb + TV — sin cargo. Router y decodificadores en comodato.</div>
+      <div class="contact">📧 tramites@coop5.com.ar</div>
+    </div>
+  </div>
+
+  <!-- TELÉFONO -->
+  <div class="card" data-tags="telefono linea fija mantenimiento conexion fibra">
+    <div class="card-header color-telefono">
+      <span class="icon">☎</span> Servicio de Teléfono
+    </div>
+    <div class="card-body">
+      <div class="section-title">Tarifas</div>
+      <div class="price-row"><span class="price-label">Conexión (solo teléfono por fibra)</span><span class="price-value">$17.011,93</span></div>
+      <div class="price-row"><span class="price-label">Mantenimiento Familiar</span><span class="price-value">$3.700</span></div>
+      <div class="price-row"><span class="price-label">Mantenimiento Comercial</span><span class="price-value">$9.290</span></div>
+
+      <div class="note">Consumo: varía según cada usuario.</div>
+      <div class="contact">📧 tramites@coop5.com.ar</div>
+    </div>
+  </div>
+
+  <!-- SEPELIO Y SUBSIDIO -->
+  <div class="card" data-tags="sepelio subsidio fallecimiento beneficiario grupo familiar carencia">
+    <div class="card-header color-sepelio">
+      <span class="icon">🤝</span> Sepelio y Subsidio por Fallecimiento
+    </div>
+    <div class="card-body">
+      <div class="section-title">Subsidio por Fallecimiento</div>
+      <div class="price-row"><span class="price-label">Costo</span><span class="price-value">Consultar</span></div>
+
+      <div class="section-title">Requisitos — Subsidio</div>
+      <ul class="req-list">
+        <li>DNI de dos beneficiarios mayores de 18 años</li>
+        <li>Firma del titular de la energía</li>
+      </ul>
+
+      <div class="section-title">Servicio de Sepelio</div>
+      <div class="price-row"><span class="price-label">Grupo familiar (matrimonio e hijos menores de 18)</span><span class="price-value">Consultar</span></div>
+      <div class="price-row"><span class="price-label">Adicionales</span><span class="price-value">Consultar</span></div>
+
+      <div class="section-title">Requisitos — Sepelio</div>
+      <ul class="req-list">
+        <li>DNI de todos los integrantes del grupo familiar</li>
+        <li>Libreta de familia / certificado de convivencia</li>
+        <li>Firma del titular de la energía</li>
+      </ul>
+
+      <div class="note">Período de carencia: 6 meses desde la contratación del servicio.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function filtrar() {
+    const q = document.getElementById('buscar').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.card');
+    let visibles = 0;
+
+    cards.forEach(card => {
+      const texto = (card.innerText + ' ' + card.dataset.tags).toLowerCase();
+      const match = q === '' || texto.includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) visibles++;
+    });
+
+    let noRes = document.getElementById('no-results');
+    if (visibles === 0) {
+      if (!noRes) {
+        noRes = document.createElement('div');
+        noRes.id = 'no-results';
+        noRes.className = 'no-results';
+        noRes.textContent = 'No se encontraron resultados.';
+        document.getElementById('cards').appendChild(noRes);
+      }
+    } else if (noRes) {
+      noRes.remove();
+    }
+  }
+</script>
+
+</body>
+</html>
