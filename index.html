@@ -8,15 +8,15 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --verde:       #2a7a2a;
-      --verde-dark:  #1e5c1e;
-      --verde-light: #e8f5e8;
-      --amarillo:    #f5c800;
-      --amarillo-dark: #c9a200;
-      --gris-bg:     #f2f5f2;
-      --gris-borde:  #e2eae2;
-      --texto:       #1a2e1a;
-      --texto-suave: #4a6a4a;
+      --verde:       #5a9e6f;
+      --verde-dark:  #3d7a55;
+      --verde-light: #eef7f2;
+      --amarillo:    #f5d060;
+      --amarillo-dark: #d4a800;
+      --gris-bg:     #f5f8f6;
+      --gris-borde:  #ddeae3;
+      --texto:       #2c3e35;
+      --texto-suave: #6a8878;
     }
 
     body {
@@ -27,7 +27,7 @@
 
     /* ── HEADER ── */
     header {
-      background: var(--verde-dark);
+      background: linear-gradient(160deg, #3d7a55, #5a9e6f);
       color: white;
       padding: 18px 20px 0;
     }
@@ -81,7 +81,7 @@
 
     /* ── BUSCADOR ── */
     .search-wrap {
-      background: var(--verde);
+      background: linear-gradient(160deg, #3d7a55, #5a9e6f);
       padding: 14px 20px 18px;
       display: flex;
       justify-content: center;
@@ -212,14 +212,14 @@
       font-weight: 600;
     }
 
-    /* colores headers de cards */
-    .color-agua     { background: linear-gradient(135deg, #1a6fa0, #2189c5); }
-    .color-energia  { background: linear-gradient(135deg, #b34700, #d95f00); }
-    .color-internet { background: linear-gradient(135deg, #1e6b40, #27894f); }
-    .color-iptv     { background: linear-gradient(135deg, #5a3a9e, #7050c0); }
-    .color-telefono { background: linear-gradient(135deg, #1e6e70, #258a8c); }
-    .color-sepelio  { background: linear-gradient(135deg, #5a3a10, #7a5020); }
-    .color-verde    { background: linear-gradient(135deg, var(--verde-dark), var(--verde)); }
+    /* colores headers de cards — tonos pastel */
+    .color-agua     { background: linear-gradient(135deg, #5b9ec9, #78b4d8); }
+    .color-energia  { background: linear-gradient(135deg, #d4845a, #e09a72); }
+    .color-internet { background: linear-gradient(135deg, #5a9e6f, #74b587); }
+    .color-iptv     { background: linear-gradient(135deg, #8b72c8, #a08fd8); }
+    .color-telefono { background: linear-gradient(135deg, #5a9ea0, #74b5b7); }
+    .color-sepelio  { background: linear-gradient(135deg, #9e8060, #b59878); }
+    .color-verde    { background: linear-gradient(135deg, #5a9e6f, #74b587); }
 
     /* ── SECCIÓN INTERNOS ── */
     .internos-wrap {
@@ -228,33 +228,7 @@
       padding: 0 16px;
     }
 
-    .sector-filtros {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .sector-btn {
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 2px solid var(--verde);
-      background: white;
-      color: var(--verde-dark);
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .sector-btn:hover, .sector-btn.active {
-      background: var(--verde);
-      color: white;
-    }
-
-    .sector-btn.active {
-      border-color: var(--verde-dark);
-    }
+    .sector-filtros { display: none; }
 
     .internos-tabla {
       width: 100%;
@@ -330,18 +304,24 @@
 
 <header>
   <div class="header-top">
-    <!-- Logo SVG basado en el logo de la cooperativa (triángulo verde con sol amarillo) -->
-    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- Logo SVG fiel al logo de la cooperativa -->
+    <svg class="logo-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <!-- Cuerpo triángulo oscuro (sombra derecha) -->
+      <polygon points="65,8 115,95 65,95" fill="#1e5c1e"/>
+      <!-- Cuerpo triángulo principal verde -->
+      <polygon points="60,8 110,95 10,95" fill="#3d7a55"/>
+      <!-- Cara frontal base (más clara) -->
+      <polygon points="10,95 110,95 100,80 20,80" fill="#5a9e6f"/>
+      <!-- Franjas amarillas en la base -->
+      <rect x="35" y="80" width="8" height="15" fill="#f5d060"/>
+      <rect x="56" y="80" width="8" height="15" fill="#f5d060"/>
+      <rect x="77" y="80" width="8" height="15" fill="#f5d060"/>
+      <!-- Línea divisoria borde inferior triángulo -->
+      <line x1="20" y1="80" x2="100" y2="80" stroke="#1e5c1e" stroke-width="1.5"/>
       <!-- Sol amarillo -->
-      <circle cx="28" cy="28" r="14" fill="#f5c800"/>
-      <!-- Triángulo principal -->
-      <polygon points="50,5 95,90 5,90" fill="#2a7a2a"/>
-      <!-- Franja amarilla izquierda -->
-      <polygon points="28,90 38,90 55,55 45,55" fill="#f5c800"/>
-      <!-- Franja amarilla derecha -->
-      <polygon points="52,90 62,90 62,55 52,55" fill="#f5c800"/>
-      <!-- Superposición verde central para dar profundidad -->
-      <polygon points="50,10 90,85 10,85" fill="none" stroke="#1e5c1e" stroke-width="2" opacity="0.4"/>
+      <circle cx="32" cy="32" r="13" fill="#f5d060"/>
+      <!-- Brillo sol -->
+      <circle cx="32" cy="32" r="9" fill="#fbe07a"/>
     </svg>
     <div class="header-text">
       <h1>Cooperativa de Servicios Públicos</h1>
