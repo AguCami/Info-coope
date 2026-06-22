@@ -252,10 +252,9 @@
     .interno-row {
       display: flex;
       align-items: center;
-      padding: 9px 16px;
-      border-bottom: 1px solid #f0f5f0;
-      font-size: 0.88rem;
-      gap: 12px;
+      padding: 11px 16px;
+      border-bottom: 1px solid #e8f0ea;
+      gap: 14px;
       transition: background 0.1s;
     }
 
@@ -264,23 +263,25 @@
 
     .interno-num {
       background: var(--amarillo);
-      color: var(--verde-dark);
-      font-weight: 800;
-      font-size: 0.82rem;
+      color: #1a3a1a;
+      font-weight: 900;
+      font-size: 1rem;
       border-radius: 6px;
-      padding: 2px 8px;
-      min-width: 42px;
+      padding: 4px 10px;
+      min-width: 48px;
       text-align: center;
       flex-shrink: 0;
+      letter-spacing: 0.5px;
     }
 
-    .interno-nombre { flex: 1; color: var(--texto); }
+    .interno-nombre { flex: 1; color: var(--texto); font-size: 0.9rem; }
 
     .interno-tel {
       color: var(--verde-dark);
-      font-weight: 700;
-      font-size: 0.85rem;
+      font-weight: 800;
+      font-size: 0.95rem;
       white-space: nowrap;
+      letter-spacing: 0.5px;
     }
 
     .no-results {
@@ -304,27 +305,29 @@
 
 <header>
   <div class="header-top">
-    <!-- Logo SVG fiel al logo de la cooperativa -->
-    <svg class="logo-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-      <!-- Cuerpo triángulo oscuro (sombra derecha) -->
-      <polygon points="65,8 115,95 65,95" fill="#1e5c1e"/>
-      <!-- Cuerpo triángulo principal verde -->
-      <polygon points="60,8 110,95 10,95" fill="#3d7a55"/>
-      <!-- Cara frontal base (más clara) -->
-      <polygon points="10,95 110,95 100,80 20,80" fill="#5a9e6f"/>
-      <!-- Franjas amarillas en la base -->
-      <rect x="35" y="80" width="8" height="15" fill="#f5d060"/>
-      <rect x="56" y="80" width="8" height="15" fill="#f5d060"/>
-      <rect x="77" y="80" width="8" height="15" fill="#f5d060"/>
-      <!-- Línea divisoria borde inferior triángulo -->
-      <line x1="20" y1="80" x2="100" y2="80" stroke="#1e5c1e" stroke-width="1.5"/>
+    <!-- Logo SVG fiel al logo oficial -->
+    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <!-- Círculo borde verde -->
+      <circle cx="50" cy="50" r="48" fill="white" stroke="#3a7d3a" stroke-width="3.5"/>
+      <!-- Cara izquierda montaña (verde medio) -->
+      <polygon points="50,14 22,78 50,78" fill="#4d9a4d"/>
+      <!-- Cara derecha montaña (verde oscuro) -->
+      <polygon points="50,14 78,78 50,78" fill="#2d6e2d"/>
+      <!-- Pico secundario izquierda (persona/libro) -->
+      <polygon points="28,52 38,28 48,52" fill="#4d9a4d"/>
+      <!-- Cara derecha pico secundario -->
+      <polygon points="38,28 48,52 43,52" fill="#2d6e2d"/>
+      <!-- Base horizontal oscura -->
+      <rect x="22" y="76" width="56" height="13" rx="1" fill="#2d6e2d"/>
+      <!-- Franjas amarillas base -->
+      <rect x="31" y="76" width="7" height="13" fill="#f5c800"/>
+      <rect x="46" y="76" width="7" height="13" fill="#f5c800"/>
+      <rect x="61" y="76" width="7" height="13" fill="#f5c800"/>
       <!-- Sol amarillo -->
-      <circle cx="32" cy="32" r="13" fill="#f5d060"/>
-      <!-- Brillo sol -->
-      <circle cx="32" cy="32" r="9" fill="#fbe07a"/>
+      <circle cx="27" cy="30" r="11" fill="#f5c800"/>
     </svg>
     <div class="header-text">
-      <h1>Cooperativa de Servicios Públicos</h1>
+      <h1>Cooperativa de Servicios Públicos<br>de Colonia Caroya y Jesús María Ltda.</h1>
       <p>Costos, requisitos e internos</p>
     </div>
   </div>
