@@ -107,6 +107,7 @@
     /* ── SECCIÓN SERVICIOS ── */
     #seccion-servicios { display: block; }
     #seccion-internos  { display: none; }
+    #seccion-pagos     { display: none; }
 
     .container {
       max-width: 980px;
@@ -224,6 +225,73 @@
     .color-verde    { background: linear-gradient(135deg, #5a9e6f, #74b587); }
 
     /* ── SECCIÓN INTERNOS ── */
+    /* ── PAGOS ── */
+    .pagos-wrap {
+      max-width: 700px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .pagos-online-banner {
+      background: var(--verde-light);
+      border: 1px solid var(--gris-borde);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .pagos-online-banner .banner-icon { font-size: 2rem; flex-shrink: 0; }
+
+    .pagos-online-banner p { font-size: 0.9rem; color: var(--texto); }
+    .pagos-online-banner strong { font-size: 1rem; }
+    .pagos-online-banner a { color: var(--verde-dark); font-weight: 700; text-decoration: none; }
+    .pagos-online-banner a:hover { text-decoration: underline; }
+
+    .pagos-zona {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border: 1px solid var(--gris-borde);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .pagos-zona-titulo {
+      background: var(--verde-dark);
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 9px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pago-row {
+      padding: 13px 16px;
+      border-bottom: 1px solid #e8f0ea;
+    }
+
+    .pago-row:last-child { border-bottom: none; }
+    .pago-row:hover { background: var(--verde-light); }
+
+    .pago-nombre {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--texto);
+    }
+
+    .pago-dir {
+      font-size: 0.85rem;
+      color: var(--texto-suave);
+      margin-top: 2px;
+    }
+
     .internos-wrap {
       max-width: 820px;
       margin: 24px auto;
@@ -316,6 +384,7 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="mostrarTab('servicios', this)">📋 Servicios</button>
     <button class="tab-btn" onclick="mostrarTab('internos', this)">📞 Internos</button>
+    <button class="tab-btn" onclick="mostrarTab('pagos', this)">📍 Pagos</button>
   </div>
 </header>
 
@@ -705,6 +774,61 @@
   </div>
 </div>
 
+<!-- ══════════════ SECCIÓN PAGOS ══════════════ -->
+<div id="seccion-pagos">
+  <div class="pagos-wrap">
+
+    <div class="pagos-online-banner">
+      <div class="banner-icon">💡</div>
+      <div>
+        <p><strong>También podés pagar online</strong></p>
+        <p>Desde nuestra web: <a href="https://www.coop5.com.ar" target="_blank">www.coop5.com.ar</a></p>
+      </div>
+    </div>
+
+    <div class="pagos-zona">
+      <div class="pagos-zona-titulo">📍 Jesús María</div>
+      <div class="pago-row">
+        <div class="pago-nombre">Farmacia Derma</div>
+        <div class="pago-dir">Av. Miguel Juárez 1416</div>
+      </div>
+      <div class="pago-row">
+        <div class="pago-nombre">Farmacia Daniotti</div>
+        <div class="pago-dir">V. Agüero 366 y Pedro J. Frías y Ameghino</div>
+      </div>
+      <div class="pago-row">
+        <div class="pago-nombre">Mariano Max <span style="font-weight:400;font-size:0.85rem;">(Western Union)</span></div>
+        <div class="pago-dir">Ruta 9 y Ruta E66</div>
+      </div>
+      <div class="pago-row">
+        <div class="pago-nombre">Telecentro</div>
+        <div class="pago-dir">Tucumán 401</div>
+      </div>
+      <div class="pago-row">
+        <div class="pago-nombre">Agencia 660</div>
+        <div class="pago-dir">Tucumán 849</div>
+      </div>
+    </div>
+
+    <div class="pagos-zona">
+      <div class="pagos-zona-titulo">📍 Colonia Caroya</div>
+      <div class="pago-row">
+        <div class="pago-nombre">SYS Producciones</div>
+        <div class="pago-dir">Don Bosco 3590, local 3</div>
+      </div>
+    </div>
+
+    <div class="pagos-zona">
+      <div class="pagos-zona-titulo">📍 Sinsacate</div>
+      <div class="pago-row">
+        <div class="pago-nombre">Farmacia Rossi</div>
+        <div class="pago-dir">Av. Leopoldo Reyna 308</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ══════════════ SECCIÓN INTERNOS ══════════════ -->
 <div id="seccion-internos">
   <div class="internos-wrap">
@@ -877,17 +1001,11 @@
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    if (tab === 'servicios') {
-      document.getElementById('seccion-servicios').style.display = 'block';
-      document.getElementById('seccion-internos').style.display = 'none';
-      document.getElementById('buscador-servicios').style.display = 'flex';
-      document.getElementById('buscador-internos').style.display = 'none';
-    } else {
-      document.getElementById('seccion-servicios').style.display = 'none';
-      document.getElementById('seccion-internos').style.display = 'block';
-      document.getElementById('buscador-servicios').style.display = 'none';
-      document.getElementById('buscador-internos').style.display = 'flex';
-    }
+    document.getElementById('seccion-servicios').style.display = tab === 'servicios' ? 'block' : 'none';
+    document.getElementById('seccion-internos').style.display  = tab === 'internos'  ? 'block' : 'none';
+    document.getElementById('seccion-pagos').style.display     = tab === 'pagos'     ? 'block' : 'none';
+    document.getElementById('buscador-servicios').style.display = tab === 'servicios' ? 'flex' : 'none';
+    document.getElementById('buscador-internos').style.display  = tab === 'internos'  ? 'flex' : 'none';
   }
 
   // ── FILTRAR SERVICIOS ──
