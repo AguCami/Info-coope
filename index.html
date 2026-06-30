@@ -508,6 +508,25 @@
       .interno-row { flex-wrap: wrap; }
     }
   </style>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAPcD0idVhM0jWiDWEDZccog7mOZfDzC20",
+      authDomain: "info-de-la-coope.firebaseapp.com",
+      projectId: "info-de-la-coope",
+      storageBucket: "info-de-la-coope.firebasestorage.app",
+      messagingSenderId: "691230439691",
+      appId: "1:691230439691:web:e23fe28879e97787c34a0e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window._db = db;
+    window._firestoreFns = { collection, addDoc, getDocs, deleteDoc, doc, orderBy, query };
+  </script>
 </head>
 <body>
 
@@ -1228,8 +1247,8 @@
     }
   }
 
-  // ── NOTAS ──
-  function guardarNota() {
+  // ── NOTAS (Firestore) ──
+  async function guardarNota() {
     const nombre   = document.getElementById('nota-nombre').value.trim();
     const apellido = document.getElementById('nota-apellido').value.trim();
     const socio    = document.getElementById('nota-socio').value.trim();
@@ -1238,53 +1257,72 @@
 
     if (!nombre && !apellido && !texto) return;
 
-    const notas = JSON.parse(localStorage.getItem('coope-notas') || '[]');
-    notas.unshift({
-      id: Date.now(),
-      nombre, apellido, socio, telefono, texto,
-      fecha: new Date().toLocaleString('es-AR')
-    });
-    localStorage.setItem('coope-notas', JSON.stringify(notas));
+    const btn = document.querySelector('#seccion-notas .notas-form button');
+    btn.textContent = 'Guardando...';
+    btn.disabled = true;
 
-    document.getElementById('nota-nombre').value = '';
-    document.getElementById('nota-apellido').value = '';
-    document.getElementById('nota-socio').value = '';
-    document.getElementById('nota-telefono').value = '';
-    document.getElementById('nota-texto').value = '';
+    try {
+      const { collection, addDoc } = window._firestoreFns;
+      await addDoc(collection(window._db, 'notas'), {
+        nombre, apellido, socio, telefono, texto,
+        fecha: new Date().toLocaleString('es-AR'),
+        timestamp: Date.now()
+      });
+      document.getElementById('nota-nombre').value = '';
+      document.getElementById('nota-apellido').value = '';
+      document.getElementById('nota-socio').value = '';
+      document.getElementById('nota-telefono').value = '';
+      document.getElementById('nota-texto').value = '';
+      await renderNotas();
+    } catch(e) {
+      alert('Error al guardar: ' + e.message);
+    }
 
-    renderNotas();
+    btn.textContent = 'Guardar nota';
+    btn.disabled = false;
   }
 
-  function eliminarNota(id) {
-    let notas = JSON.parse(localStorage.getItem('coope-notas') || '[]');
-    notas = notas.filter(n => n.id !== id);
-    localStorage.setItem('coope-notas', JSON.stringify(notas));
-    renderNotas();
+  async function eliminarNota(id) {
+    if (!confirm('¿Eliminar esta nota?')) return;
+    const { deleteDoc, doc } = window._firestoreFns;
+    await deleteDoc(doc(window._db, 'notas', id));
+    await renderNotas();
   }
 
-  function renderNotas() {
-    const notas = JSON.parse(localStorage.getItem('coope-notas') || '[]');
+  async function renderNotas() {
     const lista = document.getElementById('notas-lista');
     if (!lista) return;
 
-    if (notas.length === 0) {
-      lista.innerHTML = '<div class="notas-empty">No hay notas guardadas.</div>';
-      return;
-    }
+    lista.innerHTML = '<div class="notas-empty">Cargando...</div>';
 
-    lista.innerHTML = notas.map(n => `
-      <div class="nota-card">
-        <div class="nota-header">
-          <div>
-            <div class="nota-nombre">${n.nombre} ${n.apellido}</div>
-            <div class="nota-socio">${n.socio ? 'Socio N° ' + n.socio : ''}${n.telefono ? (n.socio ? ' · ' : '') + '☎ ' + n.telefono : ''}</div>
-          </div>
-          <button class="nota-eliminar" onclick="eliminarNota(${n.id})" title="Eliminar">🗑</button>
-        </div>
-        ${n.texto ? `<div class="nota-texto">${n.texto}</div>` : ''}
-        <div class="nota-fecha">${n.fecha}</div>
-      </div>
-    `).join('');
+    try {
+      const { collection, getDocs, query, orderBy } = window._firestoreFns;
+      const q = query(collection(window._db, 'notas'), orderBy('timestamp', 'desc'));
+      const snap = await getDocs(q);
+
+      if (snap.empty) {
+        lista.innerHTML = '<div class="notas-empty">No hay notas guardadas.</div>';
+        return;
+      }
+
+      lista.innerHTML = snap.docs.map(d => {
+        const n = d.data();
+        return `
+          <div class="nota-card">
+            <div class="nota-header">
+              <div>
+                <div class="nota-nombre">${n.nombre} ${n.apellido}</div>
+                <div class="nota-socio">${n.socio ? 'Socio N° ' + n.socio : ''}${n.telefono ? (n.socio ? ' · ' : '') + '☎ ' + n.telefono : ''}</div>
+              </div>
+              <button class="nota-eliminar" onclick="eliminarNota('${d.id}')" title="Eliminar">🗑</button>
+            </div>
+            ${n.texto ? `<div class="nota-texto">${n.texto}</div>` : ''}
+            <div class="nota-fecha">${n.fecha}</div>
+          </div>`;
+      }).join('');
+    } catch(e) {
+      lista.innerHTML = '<div class="notas-empty">Error al cargar notas.</div>';
+    }
   }
 
   // ── INIT ──
