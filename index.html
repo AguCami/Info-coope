@@ -109,6 +109,7 @@
     #seccion-internos  { display: none; }
     #seccion-pagos     { display: none; }
     #seccion-cortes    { display: none; }
+    #seccion-notas     { display: none; }
 
     .container {
       max-width: 980px;
@@ -227,6 +228,141 @@
     .color-verde    { background: linear-gradient(135deg, #5a9e6f, #74b587); }
 
     /* ── SECCIÓN INTERNOS ── */
+    /* ── NOTAS ── */
+    .notas-wrap {
+      max-width: 700px;
+      margin: 24px auto;
+      padding: 0 16px 32px;
+    }
+
+    .notas-form {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border: 1px solid var(--gris-borde);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .notas-form h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--verde-dark);
+      margin-bottom: 14px;
+    }
+
+    .notas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .notas-grid input, .notas-form textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--gris-borde);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--texto);
+      background: var(--gris-bg);
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .notas-grid input:focus, .notas-form textarea:focus {
+      border-color: var(--verde);
+    }
+
+    .notas-form textarea {
+      resize: vertical;
+      min-height: 80px;
+      margin-bottom: 10px;
+    }
+
+    .notas-form button {
+      background: var(--verde-dark);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .notas-form button:hover { background: var(--verde); }
+
+    .nota-card {
+      background: white;
+      border-radius: 10px;
+      border: 1px solid var(--gris-borde);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    .nota-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .nota-nombre {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--texto);
+    }
+
+    .nota-socio {
+      font-size: 0.8rem;
+      color: var(--texto-suave);
+      margin-top: 2px;
+    }
+
+    .nota-texto {
+      font-size: 0.88rem;
+      color: var(--texto);
+      margin-top: 8px;
+      white-space: pre-wrap;
+    }
+
+    .nota-fecha {
+      font-size: 0.75rem;
+      color: var(--texto-suave);
+      margin-top: 6px;
+    }
+
+    .nota-eliminar {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #c0392b;
+      flex-shrink: 0;
+      padding: 2px 6px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+
+    .nota-eliminar:hover { background: #fdecea; }
+
+    .notas-empty {
+      text-align: center;
+      color: var(--texto-suave);
+      font-size: 0.9rem;
+      padding: 30px 0;
+    }
+
+    @media (max-width: 480px) {
+      .notas-grid { grid-template-columns: 1fr; }
+    }
+
     /* ── PAGOS ── */
     .pagos-wrap {
       max-width: 700px;
@@ -388,6 +524,7 @@
     <button class="tab-btn" onclick="mostrarTab('internos', this)">📞 Internos</button>
     <button class="tab-btn" onclick="mostrarTab('pagos', this)">📍 Pagos</button>
     <button class="tab-btn" onclick="mostrarTab('cortes', this)">✂️ Cortes</button>
+    <button class="tab-btn" onclick="mostrarTab('notas', this)">📝 Notas</button>
   </div>
 </header>
 
@@ -852,6 +989,24 @@
   </div>
 </div>
 
+<!-- ══════════════ SECCIÓN NOTAS ══════════════ -->
+<div id="seccion-notas">
+  <div class="notas-wrap">
+    <div class="notas-form">
+      <h3>Nueva nota</h3>
+      <div class="notas-grid">
+        <input type="text" id="nota-nombre" placeholder="Nombre" />
+        <input type="text" id="nota-apellido" placeholder="Apellido" />
+        <input type="text" id="nota-socio" placeholder="N° de socio" />
+        <input type="text" id="nota-telefono" placeholder="Teléfono (opcional)" />
+      </div>
+      <textarea id="nota-texto" placeholder="Notas..."></textarea>
+      <button onclick="guardarNota()">Guardar nota</button>
+    </div>
+    <div id="notas-lista"></div>
+  </div>
+</div>
+
 <!-- ══════════════ SECCIÓN CORTES ══════════════ -->
 <div id="seccion-cortes">
   <div style="max-width:600px;margin:60px auto;padding:0 16px;text-align:center;">
@@ -1040,6 +1195,8 @@
     document.getElementById('seccion-internos').style.display  = tab === 'internos'  ? 'block' : 'none';
     document.getElementById('seccion-pagos').style.display     = tab === 'pagos'     ? 'block' : 'none';
     document.getElementById('seccion-cortes').style.display    = tab === 'cortes'    ? 'block' : 'none';
+    document.getElementById('seccion-notas').style.display     = tab === 'notas'     ? 'block' : 'none';
+    if (tab === 'notas') renderNotas();
     document.getElementById('buscador-servicios').style.display = tab === 'servicios' ? 'flex' : 'none';
     document.getElementById('buscador-internos').style.display  = tab === 'internos'  ? 'flex' : 'none';
   }
@@ -1069,6 +1226,65 @@
     } else if (noRes) {
       noRes.remove();
     }
+  }
+
+  // ── NOTAS ──
+  function guardarNota() {
+    const nombre   = document.getElementById('nota-nombre').value.trim();
+    const apellido = document.getElementById('nota-apellido').value.trim();
+    const socio    = document.getElementById('nota-socio').value.trim();
+    const telefono = document.getElementById('nota-telefono').value.trim();
+    const texto    = document.getElementById('nota-texto').value.trim();
+
+    if (!nombre && !apellido && !texto) return;
+
+    const notas = JSON.parse(localStorage.getItem('coope-notas') || '[]');
+    notas.unshift({
+      id: Date.now(),
+      nombre, apellido, socio, telefono, texto,
+      fecha: new Date().toLocaleString('es-AR')
+    });
+    localStorage.setItem('coope-notas', JSON.stringify(notas));
+
+    document.getElementById('nota-nombre').value = '';
+    document.getElementById('nota-apellido').value = '';
+    document.getElementById('nota-socio').value = '';
+    document.getElementById('nota-telefono').value = '';
+    document.getElementById('nota-texto').value = '';
+
+    renderNotas();
+  }
+
+  function eliminarNota(id) {
+    let notas = JSON.parse(localStorage.getItem('coope-notas') || '[]');
+    notas = notas.filter(n => n.id !== id);
+    localStorage.setItem('coope-notas', JSON.stringify(notas));
+    renderNotas();
+  }
+
+  function renderNotas() {
+    const notas = JSON.parse(localStorage.getItem('coope-notas') || '[]');
+    const lista = document.getElementById('notas-lista');
+    if (!lista) return;
+
+    if (notas.length === 0) {
+      lista.innerHTML = '<div class="notas-empty">No hay notas guardadas.</div>';
+      return;
+    }
+
+    lista.innerHTML = notas.map(n => `
+      <div class="nota-card">
+        <div class="nota-header">
+          <div>
+            <div class="nota-nombre">${n.nombre} ${n.apellido}</div>
+            <div class="nota-socio">${n.socio ? 'Socio N° ' + n.socio : ''}${n.telefono ? (n.socio ? ' · ' : '') + '☎ ' + n.telefono : ''}</div>
+          </div>
+          <button class="nota-eliminar" onclick="eliminarNota(${n.id})" title="Eliminar">🗑</button>
+        </div>
+        ${n.texto ? `<div class="nota-texto">${n.texto}</div>` : ''}
+        <div class="nota-fecha">${n.fecha}</div>
+      </div>
+    `).join('');
   }
 
   // ── INIT ──
