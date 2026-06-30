@@ -108,6 +108,7 @@
     #seccion-servicios { display: block; }
     #seccion-internos  { display: none; }
     #seccion-pagos     { display: none; }
+    #seccion-cortes    { display: none; }
 
     .container {
       max-width: 980px;
@@ -386,6 +387,7 @@
     <button class="tab-btn active" onclick="mostrarTab('servicios', this)">📋 Servicios</button>
     <button class="tab-btn" onclick="mostrarTab('internos', this)">📞 Internos</button>
     <button class="tab-btn" onclick="mostrarTab('pagos', this)">📍 Pagos</button>
+    <button class="tab-btn" onclick="mostrarTab('cortes', this)">✂️ Cortes</button>
   </div>
 </header>
 
@@ -849,6 +851,15 @@
   </div>
 </div>
 
+<!-- ══════════════ SECCIÓN CORTES ══════════════ -->
+<div id="seccion-cortes">
+  <div style="max-width:600px;margin:60px auto;padding:0 16px;text-align:center;">
+    <div style="font-size:3rem;">🚧</div>
+    <h2 style="margin-top:16px;color:var(--verde-dark);font-size:1.4rem;">Próximamente</h2>
+    <p style="margin-top:8px;color:var(--texto-suave);font-size:0.95rem;">Esta sección está en preparación. Pronto vas a poder consultar los plazos para cortes de servicio.</p>
+  </div>
+</div>
+
 <!-- ══════════════ SECCIÓN INTERNOS ══════════════ -->
 <div id="seccion-internos">
   <div class="internos-wrap">
@@ -1027,6 +1038,7 @@
     document.getElementById('seccion-servicios').style.display = tab === 'servicios' ? 'block' : 'none';
     document.getElementById('seccion-internos').style.display  = tab === 'internos'  ? 'block' : 'none';
     document.getElementById('seccion-pagos').style.display     = tab === 'pagos'     ? 'block' : 'none';
+    document.getElementById('seccion-cortes').style.display    = tab === 'cortes'    ? 'block' : 'none';
     document.getElementById('buscador-servicios').style.display = tab === 'servicios' ? 'flex' : 'none';
     document.getElementById('buscador-internos').style.display  = tab === 'internos'  ? 'flex' : 'none';
   }
