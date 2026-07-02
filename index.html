@@ -1045,8 +1045,13 @@
           <input type="date" id="corte-fecha" />
         </div>
         <div>
-          <label style="font-size:0.78rem;color:var(--texto-suave);display:block;margin-bottom:4px;">Servicio</label>
-          <input type="text" id="corte-servicio" placeholder="Ej: Energía, Agua..." />
+          <label style="font-size:0.78rem;color:var(--texto-suave);display:block;margin-bottom:4px;">Sección</label>
+          <select id="corte-servicio" style="width:100%;padding:8px 10px;border:1px solid #d0ddd5;border-radius:8px;font-size:.9rem;background:#fff;">
+            <option value="">-- Seleccionar --</option>
+            <option value="Luz comercial">Luz comercial</option>
+            <option value="TICs">TICs</option>
+            <option value="Luz y agua familia">Luz y agua familia</option>
+          </select>
         </div>
       </div>
       <textarea id="corte-notas" placeholder="Observaciones (opcional)..." style="margin-top:4px;"></textarea>
@@ -1404,23 +1409,38 @@
         return;
       }
 
-      lista.innerHTML = snap.docs.map(d => {
+      const secciones = ['Luz comercial', 'TICs', 'Luz y agua familia'];
+      const grupos = {};
+      secciones.forEach(s => grupos[s] = []);
+
+      snap.docs.forEach(d => {
         const c = d.data();
-        const fmt = iso => iso ? iso.split('-').reverse().join('/') : '—';
-        return `
-          <div class="nota-card">
-            <div class="nota-header">
-              <div class="nota-nombre">${c.servicio || 'Sin servicio'}</div>
-              <button class="nota-eliminar" onclick="eliminarCorte('${d.id}')" title="Eliminar">🗑</button>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0;font-size:.85rem;">
-              <div><strong>Aviso</strong><br>${fmt(c.aviso)}</div>
-              <div><strong>Plazo</strong><br>${fmt(c.plazo)}</div>
-              <div><strong>Fecha real</strong><br>${fmt(c.fecha)}</div>
-            </div>
-            ${c.notas ? `<div class="nota-texto">${c.notas}</div>` : ''}
-          </div>`;
-      }).join('');
+        const sec = secciones.includes(c.servicio) ? c.servicio : 'Luz comercial';
+        grupos[sec].push({ id: d.id, ...c });
+      });
+
+      const fmt = iso => iso ? iso.split('-').reverse().join('/') : '—';
+
+      lista.innerHTML = secciones.map(sec => `
+        <div style="margin-bottom:24px;">
+          <h4 style="margin:0 0 10px;color:var(--verde-dark);font-size:.95rem;border-bottom:2px solid var(--verde);padding-bottom:4px;">${sec}</h4>
+          ${grupos[sec].length === 0
+            ? '<div class="notas-empty" style="font-size:.82rem;">Sin cortes registrados.</div>'
+            : grupos[sec].map(c => `
+              <div class="nota-card">
+                <div class="nota-header">
+                  <div class="nota-nombre">${sec}</div>
+                  <button class="nota-eliminar" onclick="eliminarCorte('${c.id}')" title="Eliminar">🗑</button>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0;font-size:.85rem;">
+                  <div><strong>Aviso</strong><br>${fmt(c.aviso)}</div>
+                  <div><strong>Plazo</strong><br>${fmt(c.plazo)}</div>
+                  <div><strong>Fecha real</strong><br>${fmt(c.fecha)}</div>
+                </div>
+                ${c.notas ? `<div class="nota-texto">${c.notas}</div>` : ''}
+              </div>`).join('')
+          }
+        </div>`).join('');
     } catch(e) {
       lista.innerHTML = '<div class="notas-empty">Error al cargar cortes.</div>';
     }
