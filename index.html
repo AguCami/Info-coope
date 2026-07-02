@@ -1028,10 +1028,31 @@
 
 <!-- ══════════════ SECCIÓN CORTES ══════════════ -->
 <div id="seccion-cortes">
-  <div style="max-width:600px;margin:60px auto;padding:0 16px;text-align:center;">
-    <div style="font-size:3rem;">🚧</div>
-    <h2 style="margin-top:16px;color:var(--verde-dark);font-size:1.4rem;">Próximamente</h2>
-    <p style="margin-top:8px;color:var(--texto-suave);font-size:0.95rem;">Esta sección está en preparación. Pronto vas a poder consultar los plazos para cortes de servicio.</p>
+  <div class="notas-wrap">
+    <div class="notas-form">
+      <h3>Registrar corte</h3>
+      <div class="notas-grid">
+        <div>
+          <label style="font-size:0.78rem;color:var(--texto-suave);display:block;margin-bottom:4px;">Fecha de aviso</label>
+          <input type="date" id="corte-aviso" />
+        </div>
+        <div>
+          <label style="font-size:0.78rem;color:var(--texto-suave);display:block;margin-bottom:4px;">Plazo (vencimiento)</label>
+          <input type="date" id="corte-plazo" />
+        </div>
+        <div>
+          <label style="font-size:0.78rem;color:var(--texto-suave);display:block;margin-bottom:4px;">Fecha real de corte</label>
+          <input type="date" id="corte-fecha" />
+        </div>
+        <div>
+          <label style="font-size:0.78rem;color:var(--texto-suave);display:block;margin-bottom:4px;">Servicio</label>
+          <input type="text" id="corte-servicio" placeholder="Ej: Energía, Agua..." />
+        </div>
+      </div>
+      <textarea id="corte-notas" placeholder="Observaciones (opcional)..." style="margin-top:4px;"></textarea>
+      <button onclick="guardarCorte()">Guardar corte</button>
+    </div>
+    <div id="cortes-lista"></div>
   </div>
 </div>
 
@@ -1216,6 +1237,7 @@
     document.getElementById('seccion-cortes').style.display    = tab === 'cortes'    ? 'block' : 'none';
     document.getElementById('seccion-notas').style.display     = tab === 'notas'     ? 'block' : 'none';
     if (tab === 'notas') renderNotas();
+    if (tab === 'cortes') renderCortes();
     document.getElementById('buscador-servicios').style.display = tab === 'servicios' ? 'flex' : 'none';
     document.getElementById('buscador-internos').style.display  = tab === 'internos'  ? 'flex' : 'none';
   }
@@ -1322,6 +1344,85 @@
       }).join('');
     } catch(e) {
       lista.innerHTML = '<div class="notas-empty">Error al cargar notas.</div>';
+    }
+  }
+
+  // ── CORTES (Firestore) ──
+  async function guardarCorte() {
+    const aviso    = document.getElementById('corte-aviso').value;
+    const plazo    = document.getElementById('corte-plazo').value;
+    const fecha    = document.getElementById('corte-fecha').value;
+    const servicio = document.getElementById('corte-servicio').value.trim();
+    const notas    = document.getElementById('corte-notas').value.trim();
+
+    if (!aviso && !plazo && !fecha && !servicio) return;
+
+    const btn = document.querySelector('#seccion-cortes .notas-form button');
+    btn.textContent = 'Guardando...';
+    btn.disabled = true;
+
+    try {
+      const { collection, addDoc } = window._firestoreFns;
+      await addDoc(collection(window._db, 'cortes'), {
+        aviso, plazo, fecha, servicio, notas,
+        timestamp: Date.now()
+      });
+      document.getElementById('corte-aviso').value = '';
+      document.getElementById('corte-plazo').value = '';
+      document.getElementById('corte-fecha').value = '';
+      document.getElementById('corte-servicio').value = '';
+      document.getElementById('corte-notas').value = '';
+      await renderCortes();
+    } catch(e) {
+      alert('Error al guardar: ' + e.message);
+    }
+
+    btn.textContent = 'Guardar corte';
+    btn.disabled = false;
+  }
+
+  async function eliminarCorte(id) {
+    if (!confirm('¿Eliminar este corte?')) return;
+    const { deleteDoc, doc } = window._firestoreFns;
+    await deleteDoc(doc(window._db, 'cortes', id));
+    await renderCortes();
+  }
+
+  async function renderCortes() {
+    const lista = document.getElementById('cortes-lista');
+    if (!lista) return;
+
+    lista.innerHTML = '<div class="notas-empty">Cargando...</div>';
+
+    try {
+      const { collection, getDocs, query, orderBy } = window._firestoreFns;
+      const q = query(collection(window._db, 'cortes'), orderBy('timestamp', 'desc'));
+      const snap = await getDocs(q);
+
+      if (snap.empty) {
+        lista.innerHTML = '<div class="notas-empty">No hay cortes registrados.</div>';
+        return;
+      }
+
+      lista.innerHTML = snap.docs.map(d => {
+        const c = d.data();
+        const fmt = iso => iso ? iso.split('-').reverse().join('/') : '—';
+        return `
+          <div class="nota-card">
+            <div class="nota-header">
+              <div class="nota-nombre">${c.servicio || 'Sin servicio'}</div>
+              <button class="nota-eliminar" onclick="eliminarCorte('${d.id}')" title="Eliminar">🗑</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0;font-size:.85rem;">
+              <div><strong>Aviso</strong><br>${fmt(c.aviso)}</div>
+              <div><strong>Plazo</strong><br>${fmt(c.plazo)}</div>
+              <div><strong>Fecha real</strong><br>${fmt(c.fecha)}</div>
+            </div>
+            ${c.notas ? `<div class="nota-texto">${c.notas}</div>` : ''}
+          </div>`;
+      }).join('');
+    } catch(e) {
+      lista.innerHTML = '<div class="notas-empty">Error al cargar cortes.</div>';
     }
   }
 
