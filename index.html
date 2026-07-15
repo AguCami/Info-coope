@@ -38,7 +38,63 @@
       justify-content: center;
       gap: 16px;
       padding-bottom: 14px;
+      position: relative;
     }
+
+    #btn-ajustes {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: rgba(255,255,255,0.18);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 1.3rem;
+      width: 38px;
+      height: 38px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    #btn-ajustes:hover { background: rgba(255,255,255,0.3); }
+    #btn-ajustes.activo { background: var(--amarillo); color: #333; }
+
+    /* modo edición */
+    body.edit-mode .card-body {
+      outline: 2px dashed #f5a623;
+      border-radius: 4px;
+      min-height: 20px;
+    }
+    body.edit-mode .card-body:focus {
+      outline: 2px solid #f5a623;
+      background: #fffdf5;
+    }
+    #barra-edicion {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #333;
+      color: white;
+      padding: 12px 20px;
+      text-align: center;
+      z-index: 999;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+    }
+    #barra-edicion.visible { display: flex; }
+    #barra-edicion button {
+      padding: 8px 22px;
+      border: none;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #btn-guardar-edicion { background: var(--amarillo); color: #333; }
+    #btn-cancelar-edicion { background: rgba(255,255,255,0.15); color: white; }
 
     .logo-svg { width: 80px; height: 80px; flex-shrink: 0; }
 
@@ -537,6 +593,7 @@
       <h1>Cooperativa de Servicios Públicos<br>de Colonia Caroya y Jesús María Ltda.</h1>
       <p>Costos, requisitos e internos</p>
     </div>
+    <button id="btn-ajustes" onclick="toggleEdicion()" title="Modo edición">⚙️</button>
   </div>
   <div class="tabs">
     <button class="tab-btn active" onclick="mostrarTab('servicios', this)">📋 Servicios</button>
@@ -1446,9 +1503,87 @@
     }
   }
 
+  // ── EDICIÓN DE TARJETAS ──
+  let _contenidoOriginal = [];
+
+  function toggleEdicion() {
+    const enEdicion = document.body.classList.contains('edit-mode');
+    if (enEdicion) {
+      cancelarEdicion();
+    } else {
+      activarEdicion();
+    }
+  }
+
+  function activarEdicion() {
+    const cuerpos = document.querySelectorAll('.card-body');
+    _contenidoOriginal = Array.from(cuerpos).map(el => el.innerHTML);
+    cuerpos.forEach(el => el.setAttribute('contenteditable', 'true'));
+    document.body.classList.add('edit-mode');
+    document.getElementById('btn-ajustes').classList.add('activo');
+    document.getElementById('barra-edicion').classList.add('visible');
+  }
+
+  function cancelarEdicion() {
+    const cuerpos = document.querySelectorAll('.card-body');
+    cuerpos.forEach((el, i) => {
+      el.removeAttribute('contenteditable');
+      if (_contenidoOriginal[i] !== undefined) el.innerHTML = _contenidoOriginal[i];
+    });
+    document.body.classList.remove('edit-mode');
+    document.getElementById('btn-ajustes').classList.remove('activo');
+    document.getElementById('barra-edicion').classList.remove('visible');
+  }
+
+  async function guardarEdicion() {
+    const btn = document.getElementById('btn-guardar-edicion');
+    btn.textContent = 'Guardando...';
+    btn.disabled = true;
+
+    const cuerpos = document.querySelectorAll('.card-body');
+    const datos = Array.from(cuerpos).map(el => el.innerHTML);
+
+    try {
+      const { collection, getDocs, deleteDoc, doc, addDoc } = window._firestoreFns;
+      const col = collection(window._db, 'config_cards');
+      const snap = await getDocs(col);
+      await Promise.all(snap.docs.map(d => deleteDoc(doc(window._db, 'config_cards', d.id))));
+      await addDoc(col, { datos, timestamp: Date.now() });
+
+      cuerpos.forEach(el => el.removeAttribute('contenteditable'));
+      document.body.classList.remove('edit-mode');
+      document.getElementById('btn-ajustes').classList.remove('activo');
+      document.getElementById('barra-edicion').classList.remove('visible');
+    } catch(e) {
+      alert('Error al guardar: ' + e.message);
+    }
+
+    btn.textContent = 'Guardar cambios';
+    btn.disabled = false;
+  }
+
+  async function cargarEdicionGuardada() {
+    try {
+      const { collection, getDocs, query, orderBy } = window._firestoreFns;
+      const q = query(collection(window._db, 'config_cards'), orderBy('timestamp', 'desc'));
+      const snap = await getDocs(q);
+      if (snap.empty) return;
+      const { datos } = snap.docs[0].data();
+      const cuerpos = document.querySelectorAll('.card-body');
+      cuerpos.forEach((el, i) => { if (datos[i]) el.innerHTML = datos[i]; });
+    } catch(e) { /* sin config guardada */ }
+  }
+
   // ── INIT ──
   initSectores();
+  cargarEdicionGuardada();
 </script>
+
+<div id="barra-edicion">
+  <span style="font-size:.9rem;">✏️ Modo edición activo — hacé clic sobre cualquier tarjeta para editar</span>
+  <button id="btn-guardar-edicion" onclick="guardarEdicion()">Guardar cambios</button>
+  <button id="btn-cancelar-edicion" onclick="cancelarEdicion()">Cancelar</button>
+</div>
 
 </body>
 </html>
